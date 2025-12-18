@@ -1,17 +1,9 @@
 from . import views
 from .views import  works
-from django_otp.admin import OTPAdminSite
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
 from .views import team_view
-from django.contrib import admin
-from django.urls import path, include
-
-
-
-
-
+from django.urls import path
 
 urlpatterns = [
     path('', views.home, name='home'),

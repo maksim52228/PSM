@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&&+pzhqbsetsd88pg!uj(=!30msp-sh)wsbr8impz6i1*$!9l)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -159,12 +159,14 @@ else:
     AWS_QUERYSTRING_AUTH = False
 
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.us-west-004.backblazeb2.com/'
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.us-east-004.backblazeb2.com/'
+
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
 
 ]
+
 AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = 1
 AXES_LOCKOUT_TEMPLATE = None  # Или укажите свой шаблон

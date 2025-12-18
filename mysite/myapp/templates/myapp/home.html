@@ -1,0 +1,513 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block title %}ПСМ - Профессиональные Электромонтажные Работы{% endblock %}
+
+{% block content %}
+<!-- Мобильное меню -->
+<header class="fixed-header bg-white bg-opacity-75 py-2 d-block d-lg-none">
+    <div class="container-fluid">
+        <button class="btn btn-primary w-100 py-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
+            <i class="fas fa-bars me-2"></i>Меню
+        </button>
+        <div class="collapse mt-2" id="mobileMenu">
+            <div class="d-grid gap-2">
+                <a class="btn btn-outline-primary" href="#home">Главная</a>
+                <a class="btn btn-outline-primary" href="#news">Новости</a>
+                <a class="btn btn-outline-primary" href="#about">О нас</a>
+                <a class="btn btn-outline-primary" href="#works">Объекты</a>
+                <a class="btn btn-outline-primary" href="#team">Команда</a>
+                <a class="btn btn-outline-primary" href="{% url 'chat' %}">Чат</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Десктопное меню -->
+<header class="fixed-header bg-white bg-opacity-75 py-2 d-none d-lg-block">
+    <div class="container-fluid d-flex justify-content-center">
+        <nav class="d-flex flex-wrap justify-content-center gap-3">  <!-- Увеличено расстояние между кнопками -->
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#home">ПСМ</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#news">Новости</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#about">О нас</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#works">Объекты</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#team">Команда</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="{% url 'chat' %}">Чат</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Герой-секция -->
+<section id="home" class="hero-section py-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "myapp/images/ЛЭП.jpg" %}') no-repeat center/cover; min-height: 80vh; display: flex; align-items: center;">
+    <div class="container px-3 text-center text-white">
+        <div class="row justify-content-center">
+            <div class=" container col-12">
+                <h1 class="fw-bold flowing-wave-single"
+                    style="font-size: clamp(2rem, 6vw, 4rem);
+                           line-height: 1.2;
+                           margin-bottom: 1.5rem;">
+                    ПромСпецМонтаж
+                </h1>
+
+                <style>
+                .flowing-wave-single {
+                    background: linear-gradient(90deg, #FFFFFF 0%, #6c63ff 10%, #6c63ff 15%, #FFFFFF 30%);
+                    background-size: 200% 100%;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    color: transparent;
+                    animation: waveFlow 2.5s linear infinite;
+                    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                @keyframes waveFlow {
+                    0% { background-position: -100% 0; }
+                    100% { background-position: 100% 0; }
+                }
+                </style>
+
+                <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                    <a href="#news" class="btn btn-primary px-md-4 py-2 py-md-3 fs-6 fs-md-5">
+                        <i class="fas fa-newspaper me-2 " ></i>Новости
+                    </a>
+                    <a href="{% url 'news_list' %}" class="btn btn-outline-light  px-md-4 py-2 py-md-3 fs-6 fs-md-5">
+                        <i class="fas fa-list me-2"></i>Все новости
+                    </a>
+                    <a href="#team" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5">
+                        <i class="fas fa-users me-1"></i>Команда
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Новости -->
+<section id="news" class="py-4 bg-light">
+    <div class="container px-3 py-4">
+        <h2 class="h3 pb-2 border-bottom text-center">Последние новости</h2>
+        <div class="row g-3 py-3">
+            {% for news_item in latest_news %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    {% if news_item.images.first %}
+                    <div style="height: 150px; overflow: hidden;">
+                        <img src="{{ news_item.images.first.image.url }}"
+                             class="img-fluid w-100 h-100"
+                             alt="{{ news_item.title }}"
+                             style="object-fit: cover;">
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h3 class="h5 card-title">{{ news_item.title }}</h3>
+                        <p class="text-muted small">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            {{ news_item.date_posted|date:"d.m.Y" }}
+                        </p>
+                        <p class="card-text small">{{ news_item.content|truncatewords:0 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{% url 'news_detail' news_item.pk %}" class="btn btn-sm btn-primary w-100">
+                            Читать далее
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-3">
+                <p class="text-muted">Новости пока отсутствуют</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-2">
+            <a href="{% url 'news_list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-list me-1"></i> Все новости
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- О компании -->
+<section id="about" class="py-4">
+    <div class="container px-3 py-4" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "myapp/images/electro-bg.jpg" %}') no-repeat center/cover; background-size: cover;">
+        <div class="text-white">
+            <h2 class="h3 pb-2 border-bottom">О компании </h2>
+
+
+            <div class="small me-2 ps-3 ">
+                <p>Общество с ограниченной ответственностью «ПромСпецМонтаж» (ООО «ПСМ») образовано в 2019 году, путем реорганизации и слияния нескольких строительно-монтажных компаний, вобрав в себя весь положительный опыт работы на строительных объектах Красноярского края, включая Таймырский автономный округ.</p>
+
+                <p>Сотрудники компании являются специалистами, имеющими многолетний опыт работы на объектах промышленного и жилищного строительства, устройства инженерной инфраструктуры крупных медицинских и образовательных учреждений, реконструкции и строительства спортивных объектов Универсиады 2019 года и имеют почетные грамоты и благодарственные письма от губернатора Красноярского края.</p>
+
+                <h5 class="mt-3 h6">Основные направления деятельности:</h5>
+                <ol class="ps-3">
+                    <li><strong class="text-white">Проектирование</strong> силовых и слаботочных кабельных систем инженерного обеспечения зданий жилищного и промышленного строительства;</li>
+                    <li><strong class="text-white">Монтаж</strong> силовых электрических сетей, систем охрано-пожарной сигнализации, СКУД и информационных сетей любой сложности в промышленном и гражданском строительстве. Монтаж и наладка тяжелого оборудования КРП, ТП и оборудования систем бесперебойного питания зданий.</li>
+                    <li><strong class="text-white">Пуско-наладочные работы</strong> силовых и слаботочных систем.</li>
+                </ol>
+
+                <p>Основным направлением деятельности компании являются электромонтажные работы любой сложности. Мы работаем по всему Красноярскому краю и за его пределами. Специалистами нашей компании реализован ряд крупных проектов в таких городах как Норильск, Красноярск, Ачинск, Минусинск.</p>
+
+                <p>ООО «ПСМ» располагает собственным штатом квалифицированных специалистов, монтажных бригад и готово к реализации любых технически сложных проектов и сдачи выполненных работ «под ключ».</p>
+
+
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<!-- Наши работы -->
+<section id="works" class="py-4">
+
+    <div class="container px-3 py-4">
+        <h2 class="h3 pb-2 border-bottom text-center">Наши работы</h2>
+
+        git init<div class="works-carousel-wrapper py-3">
+            <div class="works-carousel-track" id="worksTrack">
+                {% for work in works %}
+                <div class="works-carousel-slide">
+                    <div class="card h-100 shadow-sm mx-2" style="max-width: 400px;">  <!-- Добавил ограничение по ширине -->
+                        <div style="height: 250px; overflow: hidden;">
+                            <img src="{{ work.photo.url }}" class="img-fluid w-100 h-100"
+                                 alt="{{ work.name }}" style="object-fit: cover;">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="h5 card-title">{{ work.name }}</h3>
+                            {% if work.bio %}
+                            <p class="card-text small" style="white-space: pre-line;">{{ work.bio }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="works-carousel-slide">
+                    <div class="alert alert-info small">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Портфолио наших работ в процессе наполнения
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="works-carousel-btn works-carousel-prev" aria-label="Previous">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="works-carousel-btn works-carousel-next" aria-label="Next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        <div class="text-center mt-2 position-relative">
+    <!-- Анимированная стрелка -->
+        <div class="arrow-pointer" style="
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            font-size: 24px;
+            color: #6c63ff;
+        ">
+            ↓
+        </div>
+
+        <!-- Ваша кнопка "Все объекты" -->
+        <a href="{% url 'works' %}" class="btn btn-outline-primary position-relative" style="z-index: 1;">
+            <i class="fas fa-list me-1"></i> Все объекты
+        </a>
+    </div>
+
+    <style>
+    /* Анимация стрелки */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+        40% {
+            transform: translateX(-50%) translateY(-10px);
+        }
+        60% {
+            transform: translateX(-50%) translateY(-5px);
+        }
+    }
+
+    /* Дополнительные стили для лучшего отображения */
+    .arrow-pointer {
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .arrow-pointer:hover {
+        color: #4a43d2;
+        animation: none;
+        transform: translateX(-50%) scale(1.2);
+    }
+    </style>
+
+    <script>
+    // Дополнительный скрипт для обработки клика по стрелке
+    document.addEventListener('DOMContentLoaded', function() {
+        const arrow = document.querySelector('.arrow-pointer');
+        if (arrow) {
+            arrow.addEventListener('click', function() {
+                document.querySelector('a[href="{% url 'works' %}"]').click();
+            });
+        }
+    });
+    </script>
+
+    </div>
+
+
+<style>
+.works-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 0 50px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.works-carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    padding: 10px 0;
+}
+
+.works-carousel-slide {
+    flex: 0 0 33.333%; /* 3 слайда в ряд */
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+/* Адаптация для разных экранов */
+@media (max-width: 992px) {
+    .works-carousel-slide {
+        flex: 0 0 50%; /* 2 слайда в ряд */
+    }
+}
+
+@media (max-width: 768px) {
+    .works-carousel-slide {
+        flex: 0 0 100%; /* 1 слайд в ряд */
+    }
+    .works-carousel-wrapper {
+        padding: 0 40px;
+    }
+}
+
+.works-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(108, 99, 255, 0.7);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.works-carousel-prev {
+    left: 5px;
+}
+
+.works-carousel-next {
+    right: 5px;
+}
+
+.works-carousel-btn:hover {
+    background: #6c63ff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Скрываем кнопку "вперед" когда достигнут конец */
+.works-carousel-next.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('worksTrack');
+    const slides = Array.from(track.querySelectorAll('.works-carousel-slide'));
+    const nextBtn = document.querySelector('.works-carousel-next');
+    const prevBtn = document.querySelector('.works-carousel-prev');
+
+    if (!track || slides.length === 0) return;
+
+    let currentIndex = 0;
+    let autoSlideInterval;
+    let slidesToShow = getSlidesToShow();
+
+    // Определяем сколько слайдов показывать
+    function getSlidesToShow() {
+        if (window.innerWidth >= 992) return 3;
+        if (window.innerWidth >= 768) return 2;
+        return 1;
+    }
+
+    // Проверяем, достигли ли мы конца
+    function isAtEnd() {
+        return currentIndex >= slides.length - slidesToShow;
+    }
+
+    // Обновляем состояние кнопок
+    function updateButtons() {
+        nextBtn.classList.toggle('disabled', isAtEnd());
+        prevBtn.classList.toggle('disabled', currentIndex === 0);
+    }
+
+    // Функция для перемещения к слайду
+    const moveToSlide = (index) => {
+        if (index < 0) index = 0;
+        if (index > slides.length - slidesToShow) index = slides.length - slidesToShow;
+
+        const slideWidth = slides[0].offsetWidth;
+        track.style.transform = `translateX(-${index * slideWidth}px)`;
+        currentIndex = index;
+        updateButtons();
+    };
+
+    // Автоматическое перелистывание (только если не достигнут конец)
+    const startAutoSlide = () => {
+        autoSlideInterval = setInterval(() => {
+            if (!isAtEnd()) {
+                moveToSlide(currentIndex + 1);
+            } else {
+                // Если достигнут конец - возвращаемся в начало
+                moveToSlide(0);
+            }
+        }, 5000);
+    };
+
+    // Остановка автоматического перелистывания при наведении
+    track.addEventListener('mouseenter', () => {
+        clearInterval(autoSlideInterval);
+    });
+
+    // Возобновление автоматического перелистывания
+    track.addEventListener('mouseleave', startAutoSlide);
+
+    // Кнопки навигации
+    nextBtn.addEventListener('click', () => {
+        if (!isAtEnd()) {
+            moveToSlide(currentIndex + 1);
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        moveToSlide(currentIndex - 1);
+    });
+
+    // Обработка изменения размера окна
+    window.addEventListener('resize', () => {
+        slidesToShow = getSlidesToShow();
+        moveToSlide(Math.min(currentIndex, slides.length - slidesToShow));
+    });
+
+    // Инициализация
+    updateButtons();
+    moveToSlide(0);
+    startAutoSlide();
+});
+</script>
+</section>
+
+
+<!-- Команда -->
+<section id="team" class="py-4 bg-light">
+    <div class="container px-3 py-4">
+        <h2 class="h3 pb-2 border-bottom text-center">Наша команда</h2>
+
+        <div class="row g-3 py-3">
+            {% for employee in employees %}
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <img src="{{ employee.photo.url }}" class="card-img-top rounded-circle mx-auto mt-3"
+                         alt="{{ employee.name }}" style="width: 120px; height: 120px; object-fit: cover;">
+                    <div class="card-body">
+                        <h3 class="h5 card-title">{{ employee.name }}</h3>
+                        <p class="text-primary small">{{ employee.position }}</p>
+                        {% if employee.bio %}
+                        <p class="card-text small">{{ employee.bio }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-3">
+                <p class="text-muted">Информация о сотрудниках пока отсутствует</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Контакты -->
+<section id="contact" class="py-4 bg-primary text-white">
+    <div class="container px-3 py-4">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center mb-3 mb-md-0">
+                <img src="{% static 'myapp/images/псм_куаркод.jpg' %}" alt="QR-код" class="img-fluid" style="max-height: 200px;">
+            </div>
+            <div class="col-md-6 small">
+                <p>Общество с ограниченной ответственностью</p>
+                <p>«ПромСпецМонтаж»</p>
+                <p>660020, г.Красноярск, ул.Шахтеров, д.4, стр.8, оф.3</p>
+                <p>E-mail: info@psm-company.ru</p>
+                <p>ОКПО 35378835, ОГРН 1192468000295,</p>
+                <p>ИНН/КПП 2465191182/246501001</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Закрытие мобильного меню после клика
+    document.querySelectorAll('#mobileMenu a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var collapse = document.getElementById('mobileMenu');
+            if (collapse.classList.contains('show')) {
+                var bsCollapse = new bootstrap.Collapse(collapse, {
+                    toggle: false
+                });
+                bsCollapse.hide();
+            }
+        });
+    });
+
+    // Плавная прокрутка
+    document.body.addEventListener('click', function(e) {
+        if (e.target.closest('a[href^="#"]')) {
+            e.preventDefault();
+            const targetId = e.target.closest('a').getAttribute('href');
+            if (targetId === '#') return;
+
+            const target = document.querySelector(targetId);
+            if (target) {
+                const offset = 70;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+
+                history.pushState(null, null, targetId);
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

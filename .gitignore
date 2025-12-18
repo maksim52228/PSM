@@ -1,0 +1,49 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Static files
+/static/
+/media/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Pipenv
+Pipfile
+Pipfile.lock
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Render
+render.yaml

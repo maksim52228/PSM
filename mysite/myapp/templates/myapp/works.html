@@ -1,0 +1,54 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block title %}Наши работы - ПСМ{% endblock %}
+
+{% block content %}
+<header class="fixed-header bg-white bg-opacity-75 py-2">
+    <div class="container-fluid d-flex justify-content-center">
+        <nav>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="{% url 'home' %}">
+                <i class="fas fa-landmark me-1 "></i>ПСМ
+            </a>
+        </nav>
+    </div>
+</header>
+<section class="py-5">
+    <div class="container px-4 py-5">
+        <h2 class="pb-2 border-bottom text-center">Наши работы</h2>
+
+        <div class="row g-4 py-5">
+            {% for work in works %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-img-top overflow-hidden" style="height: 250px;">
+                        <img src="{{ work.photo.url }}" class="img-fluid w-100 h-100"
+                             alt="{{ work.name }}" style="object-fit: cover;">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title h5">{{ work.name }}</h3>
+                        {% if work.bio %}
+                        <p class="card-text">{{ work.bio|linebreaks }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">
+                            Добавлено: {{ work.created_at|date:"d.m.Y" }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Портфолио наших работ в процессе наполнения
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+</section>
+{% endblock %}

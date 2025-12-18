@@ -1,0 +1,238 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block title %}Чат{% endblock %}
+
+{% block content %}
+<header class="fixed-header bg-white bg-opacity-75 py-2">
+    <div class="container-fluid d-flex justify-content-center">
+        <nav>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="{% url 'home' %}">
+                <i class="fas fa-landmark me-1 "></i>ПСМ
+            </a>
+        </nav>
+    </div>
+</header>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Общий чат -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Общий чат</h3>
+                </div>
+
+                <!-- Модальное окно для изменения имени -->
+                <div class="modal fade" id="changeUsernameModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Изменить имя в чате</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form id="usernameForm" method="post" action="{% url 'set_chat_username' %}">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="newUsername" class="form-label">Новое имя</label>
+                                        <input type="text" class="form-control" id="newUsername" name="username"
+                                               value="{{ request.session.chat_username }}" minlength="2">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" style="height: 400px; overflow-y: auto;">
+                    {% for message in messages %}
+                    <div class="mb-3">
+                        <strong>{{ message.username }}</strong>
+                        <small class="text-muted">{{ message.timestamp|date:"H:i, d M" }}</small>
+                        <div class="p-2 bg-light rounded mt-1">
+                            {{ message.message }}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center text-muted py-4">
+                        <p>Чат пока пуст. Будьте первым!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="card-footer">
+                    {% if not request.session.chat_username %}
+                        <!-- Форма для первого входа -->
+                    {% else %}
+                        <form method="post" id="chatForm">
+                            {% csrf_token %}
+                            <div class="container mt-4">
+                                <div class="row g-2 align-items-center">
+                                    <div class="col">
+                                        {{ form.message }}
+                                        <div class="invalid-feedback" id="messageError">Пожалуйста, введите сообщение</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="button" class="btn-submit-animated" id="animatedSubmitBtn">
+                                            <span class="btn-text">Отправить</span>
+                                            <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" class="btn-icon">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <small class="text-muted">
+                                        Вы пишете как: <strong>{{ request.session.chat_username }}</strong>
+                                        <button type="button" class="btn btn-outline-primary btn-sm ms-2 change-name-btn" data-bs-toggle="modal" data-bs-target="#changeUsernameModal">
+                                            Изменить имя
+                                        </button>
+                                    </small>
+                                </div>
+                            </div>
+                        </form>
+
+                        <style>
+                            .change-name-btn {
+                                padding: 0.25rem 0.5rem;
+                                border-radius: 20px;
+                                font-size: 0.875rem;
+                                transition: all 0.3s ease;
+                            }
+                            .change-name-btn:hover {
+                                background-color: blue;
+                                color: white;
+                            }
+                            .is-invalid {
+                                border-color: #dc3545 !important;
+                            }
+                            .btn-submit-animated {
+                            border: 3px solid #007bff;
+                            width: 120px;
+                            height: 50px;
+                            border-radius: 50px;
+                            background: #fff;
+                            position: relative;
+                            overflow: hidden;
+                            transition: all 0.5s ease;
+                            padding: 0;
+                            cursor: pointer;
+                        }
+                        .btn-submit-animated .btn-text {
+                            font-size: 16px;
+                            color: #007bff;
+                            display: inline-block;
+                            line-height: 44px;
+                            transition: opacity 0.3s ease;
+                            position: relative;
+                            z-index: 2;
+                        }
+                        .btn-submit-animated .btn-icon {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 30px;
+                            height: 30px;
+                            opacity: 0;
+                            transition: opacity 0.3s ease;
+                            z-index: 1;
+                        }
+                        .btn-submit-animated::after {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: #007bff;
+                            transform: scaleX(0);
+                            transform-origin: left;
+                            transition: transform 0.5s ease;
+                            z-index: 0;
+                        }
+                        .btn-submit-animated.animating {
+                            border-color: #007bff;
+                        }
+                        .btn-submit-animated.animating::after {
+                            transform: scaleX(1);
+                        }
+                        .btn-submit-animated.animating .btn-text {
+                            color: white;
+                        }
+                        </style>
+
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const chatForm = document.getElementById('chatForm');
+                            const messageInput = document.getElementById('id_message');
+                            const submitBtn = document.getElementById('animatedSubmitBtn');
+
+                            submitBtn.addEventListener('click', function() {
+                                if (!messageInput.value.trim()) {
+                                    messageInput.classList.add('is-invalid');
+                                    document.getElementById('messageError').style.display = 'block';
+                                    return;
+                                }
+
+                                // Запуск анимации
+                                this.classList.add('animating');
+                                this.disabled = true;
+
+                                const text = this.querySelector('.btn-text');
+                                const icon = this.querySelector('.btn-icon');
+
+                                // Анимация текста и иконки
+                                setTimeout(() => {
+                                    text.style.opacity = '0';
+                                }, 300);
+
+                                setTimeout(() => {
+                                    icon.style.opacity = '1';
+                                }, 600);
+
+                                // Отправка формы после анимации
+                                setTimeout(() => {
+                                    chatForm.submit();
+                                }, 1200);
+                            });
+
+                            // Сброс ошибки при вводе
+                            messageInput.addEventListener('input', function() {
+                                if (this.value.trim()) {
+                                    this.classList.remove('is-invalid');
+                                    document.getElementById('messageError').style.display = 'none';
+                                }
+                            });
+                        });
+                        </script>
+                    {% endif %}
+                </div>
+
+            <!-- Чат с администрацией -->
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Связь с администрацией</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'send_admin_message' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="adminMessage" class="form-label">Ваше сообщение</label>
+                            <textarea class="form-control" id="adminMessage" name="message" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userEmail" class="form-label">Ваш email для ответа</label>
+                            <input type="email" class="form-control" id="userEmail" name="email" required>
+                        </div>
+                        <button type="submit" class="btn btn-info text-white">Отправить администратору</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

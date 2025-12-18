@@ -1,0 +1,36 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block title %}Наша команда{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-4 py-5">
+        <h2 class="pb-2 border-bottom text-center">Наша команда</h2>
+        
+        <div class="row g-4 py-5">
+            {% for employee in employees %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <img src="{{ employee.photo.url }}" class="card-img-top rounded-circle mx-auto mt-3" 
+                         alt="{{ employee.name }}" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <h3 class="card-title h5">{{ employee.name }}</h3>
+                        <p class="text-primary">{{ employee.position }}</p>
+                        {% if employee.bio %}
+                        <p class="card-text">{{ employee.bio }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Информация о сотрудниках пока отсутствует</p>
+            </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+</section>
+{% endblock %}

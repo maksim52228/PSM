@@ -10,7 +10,6 @@ __pycache__/
 
 # Django
 db.sqlite3
-media/
 staticfiles/
 *.log
 
@@ -31,7 +30,7 @@ logs/
 
 # Static files
 /static/
-/media/
+
 
 # OS generated
 .DS_Store

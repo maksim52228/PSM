@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
-    'channels',
     'axes',
 
 
@@ -143,14 +142,7 @@ ADMIN_EMAIL = 'i-max8@yandex.ru'  # Для системных уведомлен
 
 # Email куда будут приходить заявки
 ASGI_APPLICATION = 'mysite.asgi.application'
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
+
 # Media files
 if DEBUG:
     MEDIA_URL = '/media/'

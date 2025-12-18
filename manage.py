@@ -4,7 +4,6 @@ import os
 import sys
 import locale
 sys.stdout.reconfigure(encoding='utf-8')
-locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')

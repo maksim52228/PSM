@@ -19,7 +19,10 @@ from django.conf.global_settings import AUTHENTICATION_BACKENDS
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static", # Путь к папке со статикой проекта (если есть)
+    BASE_DIR / "myapp" / "static", # Путь к папке со статикой приложения myapp
+]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -154,13 +157,13 @@ else:
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'psm-media'  # ← замени на имя твоего bucket
-    AWS_S3_ENDPOINT_URL = 'https://s3.us-west-004.backblazeb2.com'   # ← замени на свой регион!
+    AWS_S3_ENDPOINT_URL = 'https://s3.us-east-005.backblazeb2.com'  # ← замени на свой регион!
     AWS_S3_REGION_NAME = ''
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
 
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.us-west-004.backblazeb2.com/'
+    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com/'
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',

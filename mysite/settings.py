@@ -21,7 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATICFILES_DIRS = [
     BASE_DIR / "static", # Путь к папке со статикой проекта (если есть)
-    BASE_DIR / "myapp" / "static", # Путь к папке со статикой приложения myapp
 ]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/

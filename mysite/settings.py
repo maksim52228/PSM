@@ -138,11 +138,7 @@ LOGGING = {
 
 # ============ СТАТИЧЕСКИЕ И МЕДИА ФАЙЛЫ ============
 
-# STATIC_ROOT должен быть всегда определен
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / "myapp" / "static",
-]
+
 # Supabase настройки
 SUPABASE_KEY = config('SUPABASE_KEY')
 SUPABASE_SECRET = config('SUPABASE_SECRET')
@@ -150,31 +146,37 @@ SUPABASE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
 SUPABASE_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3')
 
 # Локальные настройки для разработки (DEBUG=True)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "myapp" / "static",
+]
+
+# Локальные настройки для разработки (DEBUG=True)
 if DEBUG:
     STATIC_URL = '/static/'
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
-
-    # Используем Whitenoise для статики
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Настройки для production (Backblaze B2)
+# Настройки для production (Supabase)
 else:
     # Supabase Storage настройки
     AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='')
     AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='')
-    AWS_STORAGE_BUCKET_NAME = 'psm-media'
-
-    # Ключевое изменение: используем публичный URL формат
-    AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3'
+    AWS_STORAGE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
+    AWS_S3_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL',
+                                 default='https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3')
     AWS_S3_REGION_NAME = 'us-west-3'
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_QUERYSTRING_AUTH = False
 
-    # НЕ используем стандартный S3 URL, а кастомный для публичных файлов
+    # Ключевой момент: правильный публичный URL формат Supabase
     AWS_S3_CUSTOM_DOMAIN = 'etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public'
 
+    # Для статических файлов - ОБРАТИТЕ ВНИМАНИЕ НА СЛЭШ В КОНЦЕ!
     STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/static/'
 
+    # Для медиа файлов
     DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/media/'
-

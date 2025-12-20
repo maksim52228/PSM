@@ -163,20 +163,18 @@ else:
     # Supabase Storage настройки
     AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='')
     AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='')
-    AWS_STORAGE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
-    AWS_S3_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL',
-                                 default='https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3')
+    AWS_STORAGE_BUCKET_NAME = 'psm-media'
+    AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3'
     AWS_S3_REGION_NAME = 'us-west-3'
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
 
-    # Ключевой момент: правильный публичный URL формат Supabase
+    # Правильный публичный URL формат Supabase
     AWS_S3_CUSTOM_DOMAIN = 'etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public'
 
-    # Для статических файлов - ОБРАТИТЕ ВНИМАНИЕ НА СЛЭШ В КОНЦЕ!
+    # Ключевое изменение: используем staticfiles вместо static
     STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/static/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 
-    # Для медиа файлов
     DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/media/'

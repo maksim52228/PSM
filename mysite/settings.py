@@ -9,6 +9,8 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -141,6 +143,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "myapp" / "static",
 ]
+# Supabase настройки
+SUPABASE_KEY = config('SUPABASE_KEY')
+SUPABASE_SECRET = config('SUPABASE_SECRET')
+SUPABASE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
+SUPABASE_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3')
 
 # Локальные настройки для разработки (DEBUG=True)
 if DEBUG:
@@ -153,37 +160,21 @@ if DEBUG:
 
 # Настройки для production (Backblaze B2)
 else:
-    # Backblaze B2 настройки
-    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='psm-media')
-    AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', default='https://s3.us-east-005.backblazeb2.com')
-    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='us-east-005')
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_QUERYSTRING_AUTH = False
-    AWS_S3_FILE_OVERWRITE = False
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
+    # Supabase Storage настройки
+    AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='')
+    AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='')
+    AWS_STORAGE_BUCKET_NAME = 'psm-media'
 
-    # Публичный URL для bucket
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com'
+    # Ключевое изменение: используем публичный URL формат
+    AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3'
+    AWS_S3_REGION_NAME = 'us-west-3'
 
-    # Для production отключаем whitenoise для статики
-    # и используем S3 напрямую
+    # НЕ используем стандартный S3 URL, а кастомный для публичных файлов
+    AWS_S3_CUSTOM_DOMAIN = 'etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public'
 
-    # 1. Для медиа файлов (загружаемые пользователями изображения)
-    DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-    # 2. Для статических файлов в production (стили админки и т.д.)
-    # Используем S3 только если нужно, но лучше оставить whitenoise
-    # или настроить CloudFront/CDN
-
-    # Вариант A: Используем S3 для статики в production
     STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/'
 
-    # Вариант B: Используем whitenoise для статики (проще)
-    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    # STATIC_URL = '/static/'
+    DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/media/'
+

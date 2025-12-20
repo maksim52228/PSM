@@ -33,7 +33,7 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
-# Application definition
+# Application definitionф
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -127,8 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -148,22 +147,29 @@ ADMIN_EMAIL = 'i-max8@yandex.ru'  # Для системных уведомлен
 ASGI_APPLICATION = 'mysite.asgi.application'
 
 # Media files
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 if DEBUG:
     MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_ROOT = BASE_DIR / 'media'
 else:
-    # Use Backblaze B2 for media in production
+    # Use Backblaze B2 for static files in production
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'psm-media'  # ← замени на имя твоего bucket
-    AWS_S3_ENDPOINT_URL = 'https://s3.us-east-005.backblazeb2.com'  # ← замени на свой регион!
+    AWS_S3_ENDPOINT_URL = 'https://s3.us-east-005.backblazeb2.com'
     AWS_S3_REGION_NAME = ''
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
 
+    # Для статики
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com/'
+
+    # Для медиа
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com/'
-
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',

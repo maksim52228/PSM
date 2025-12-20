@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party apps
-    'storages',  # Важно: для работы с S3/Backblaze B2
+    'storages',
     'axes',
 
     # Local apps
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Для статики в production
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -136,16 +136,15 @@ LOGGING = {
 
 # ============ СТАТИЧЕСКИЕ И МЕДИА ФАЙЛЫ ============
 
+# STATIC_ROOT должен быть всегда определен
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "myapp" / "static",
+]
+
 # Локальные настройки для разработки (DEBUG=True)
 if DEBUG:
     STATIC_URL = '/static/'
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-    # Папки со статическими файлами
-    STATICFILES_DIRS = [
-        BASE_DIR / "myapp" / "static",
-    ]
-
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -155,8 +154,8 @@ if DEBUG:
 # Настройки для production (Backblaze B2)
 else:
     # Backblaze B2 настройки
-    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='')
-    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='')
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='psm-media')
     AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', default='https://s3.us-east-005.backblazeb2.com')
     AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='us-east-005')
@@ -170,13 +169,21 @@ else:
     # Публичный URL для bucket
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com'
 
-    # 1. Для статических файлов (стили админки и т.д.)
-    STATICFILES_STORAGE = 'mysite.storages.StaticStorage'  # См. создание класса ниже
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    # Для production отключаем whitenoise для статики
+    # и используем S3 напрямую
 
-    # 2. Для медиа файлов (загружаемые пользователями изображения)
-    DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'  # См. создание класса ниже
+    # 1. Для медиа файлов (загружаемые пользователями изображения)
+    DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
-    # Убедитесь, что эти папки существуют в Backblaze B2 bucket
-    # Папка 'static/' для статики и 'media/' для медиа файлов
+    # 2. Для статических файлов в production (стили админки и т.д.)
+    # Используем S3 только если нужно, но лучше оставить whitenoise
+    # или настроить CloudFront/CDN
+
+    # Вариант A: Используем S3 для статики в production
+    STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+
+    # Вариант B: Используем whitenoise для статики (проще)
+    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    # STATIC_URL = '/static/'

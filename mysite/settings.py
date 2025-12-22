@@ -19,7 +19,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-&&+pzhqbsetsd88pg!uj(
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000']
 
 # Application definition
 INSTALLED_APPS = [
@@ -143,7 +143,7 @@ LOGGING = {
 SUPABASE_KEY = config('SUPABASE_KEY')
 SUPABASE_SECRET = config('SUPABASE_SECRET')
 SUPABASE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
-SUPABASE_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3')
+SUPABASE_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3')
 
 # Локальные настройки для разработки (DEBUG=True)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -178,3 +178,16 @@ else:
     AWS_S3_ADDRESSING_STYLE = "path"
     DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/media/'
+
+if not DEBUG:
+    LOGGING['handlers']['console'] = {
+        'level': 'DEBUG',
+        'class': 'logging.StreamHandler',
+    }
+    for logger_name in ['boto3', 'botocore', 'storages', '__name__']:
+        if logger_name not in LOGGING['loggers']:
+            LOGGING['loggers'][logger_name] = {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': True,
+            }

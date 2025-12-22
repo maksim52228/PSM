@@ -164,8 +164,8 @@ else:
     AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='')
     AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='')
     AWS_STORAGE_BUCKET_NAME = 'psm-media'
-    AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/s3'
-    AWS_S3_REGION_NAME = 'us-west-3'
+    AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3'
+    AWS_S3_REGION_NAME = 'eu-west-3'
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
 
@@ -175,6 +175,6 @@ else:
     # Ключевое изменение: используем staticfiles вместо static
     STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
-
+    AWS_S3_ADDRESSING_STYLE = "path"
     DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/media/'

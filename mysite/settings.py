@@ -139,11 +139,16 @@ LOGGING = {
 # Ключи и настройки
 AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
 AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
-AWS_STORAGE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
-AWS_S3_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3')  # Без пробелов!
+AWS_STORAGE_BUCKET_NAME = 'psm-media'
+AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.storage.supabase.co'
 AWS_S3_REGION_NAME = 'eu-west-3'
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_FILE_OVERWRITE = False
+
+# Дополнительные настройки для Supabase
+AWS_DEFAULT_ACL = None
+AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 # Django 6.0: используем новую систему STORAGES
 STORAGES = {
@@ -155,10 +160,10 @@ STORAGES = {
     },
 }
 
-# Публичные URL (только для отображения в шаблонах — не влияет на storage.url())
-MEDIA_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
-STATIC_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
-
+# Публичные URL (только для отображения в шаблонах)
+SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
+MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
+STATIC_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 # Логирование boto3 для отладки
 
 

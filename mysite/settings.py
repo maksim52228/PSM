@@ -160,20 +160,17 @@ MEDIA_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/
 STATIC_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 
 # Логирование boto3 для отладки
-import logging
-logging.basicConfig()
-logging.getLogger('boto3').setLevel(logging.DEBUG)
-logging.getLogger('botocore').setLevel(logging.DEBUG)
+
 
 if not DEBUG:
     LOGGING['handlers']['console'] = {
-        'level': 'DEBUG',
+        'level': 'WARNING',
         'class': 'logging.StreamHandler',
     }
     for logger_name in ['boto3', 'botocore', 'storages', '__name__']:
         if logger_name not in LOGGING['loggers']:
             LOGGING['loggers'][logger_name] = {
                 'handlers': ['console'],
-                'level': 'DEBUG',
+                'level': 'WARNING',
                 'propagate': True,
             }

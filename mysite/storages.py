@@ -1,19 +1,11 @@
-# mysite/storages.py
-from storages.backends.s3boto3 import S3Boto3Storage
+from storages.backends.s3 import S3Storage
 
-class MediaStorage(S3Boto3Storage):
-    location = 'media'
-    file_overwrite = False
-    querystring_auth = False
-
-    def url(self, name):
-        return f"https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/psm-media/media/{name}"
-
-
-class StaticStorage(S3Boto3Storage):
+class StaticStorage(S3Storage):
     location = 'staticfiles'
     file_overwrite = True
     querystring_auth = False
 
-    def url(self, name):
-        return f"https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/psm-media/staticfiles/{name}"
+class MediaStorage(S3Storage):
+    location = 'media'
+    file_overwrite = False
+    querystring_auth = False

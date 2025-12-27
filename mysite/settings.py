@@ -160,11 +160,6 @@ STORAGES = {
 MEDIA_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
 STATIC_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 
-# Логирование boto3 для отладки
-import logging
-logging.basicConfig()
-logging.getLogger('boto3').setLevel(logging.DEBUG)
-logging.getLogger('botocore').setLevel(logging.DEBUG)
 
 if not DEBUG:
     LOGGING['handlers']['console'] = {

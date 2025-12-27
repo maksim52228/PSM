@@ -9,8 +9,6 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,7 +17,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-&&+pzhqbsetsd88pg!uj(
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -136,48 +134,37 @@ LOGGING = {
     },
 }
 
-# ============ СТАТИЧЕСКИЕ И МЕДИА ФАЙЛЫ ============
+# ============ SUPABASE STORAGE (для Django 6.0) ============
 
+# Ключи и настройки
+AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
+AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
+AWS_STORAGE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
+AWS_S3_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3')  # Без пробелов!
+AWS_S3_REGION_NAME = 'eu-west-3'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_ADDRESSING_STYLE = 'path'
 
-# Supabase настройки
-SUPABASE_KEY = config('SUPABASE_KEY')
-SUPABASE_SECRET = config('SUPABASE_SECRET')
-SUPABASE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
-SUPABASE_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3')
+# Django 6.0: используем новую систему STORAGES
+STORAGES = {
+    "default": {
+        "BACKEND": "mysite.storages.MediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "mysite.storages.StaticStorage",
+    },
+}
 
-# Локальные настройки для разработки (DEBUG=True)
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / "myapp" / "static",
-]
+# Публичные URL (только для отображения в шаблонах — не влияет на storage.url())
+MEDIA_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
+STATIC_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 
-# Локальные настройки для разработки (DEBUG=True)
-if DEBUG:
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Настройки для production (Supabase)
-else:
-    # Supabase Storage настройки
-    AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='')
-    AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='')
-    AWS_STORAGE_BUCKET_NAME = 'psm-media'
-    AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3'
-    AWS_S3_REGION_NAME = 'eu-west-3'
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_QUERYSTRING_AUTH = False
-
-    # Правильный публичный URL формат Supabase
-    AWS_S3_CUSTOM_DOMAIN = 'etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public'
-
-    # Ключевое изменение: используем staticfiles вместо static
-    STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
-    AWS_S3_ADDRESSING_STYLE = "path"
-    DEFAULT_FILE_STORAGE = 'mysite.storages.MediaStorage'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/media/'
+# Логирование boto3 для отладки
+import logging
+logging.basicConfig()
+logging.getLogger('boto3').setLevel(logging.DEBUG)
+logging.getLogger('botocore').setLevel(logging.DEBUG)
 
 if not DEBUG:
     LOGGING['handlers']['console'] = {

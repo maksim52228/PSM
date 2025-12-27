@@ -155,3 +155,4 @@ def works(request):
         "works": page_obj,
         "page_obj": page_obj  # Для пагинации
     })
+

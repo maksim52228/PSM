@@ -137,22 +137,26 @@ LOGGING = {
 # ============ SUPABASE STORAGE ============
 
 # Supabase S3 Credentials
-AWS_ACCESS_KEY_ID = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
-AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
+SUPABASE_KEY = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
+SUPABASE_SECRET = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
 
-# Обязательные настройки для Supabase
+# Обязательные настройки для S3/Supabase
+AWS_ACCESS_KEY_ID = SUPABASE_KEY
+AWS_SECRET_ACCESS_KEY = SUPABASE_SECRET
 AWS_STORAGE_BUCKET_NAME = 'psm-media'
 AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.storage.supabase.co'
-AWS_S3_REGION_NAME = 'eu-west-3'  # Регион для Supabase
-AWS_S3_CUSTOM_DOMAIN = f'etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}'
+AWS_S3_REGION_NAME = 'eu-west-3'  # или 'us-east-1' если не работает
 
-# Настройки безопасности
-AWS_QUERYSTRING_AUTH = False  # Отключаем подписанные URL
-AWS_DEFAULT_ACL = 'public-read'  # Supabase требует public-read для публичного доступа
-AWS_S3_FILE_OVERWRITE = False  # Не перезаписывать файлы по умолчанию
-AWS_S3_ADDRESSING_STYLE = 'path'  # Стиль пути для URL
-AWS_S3_SIGNATURE_VERSION = 's4'  # Подпись v4
-AWS_IS_GZIPPED = True  # Сжимать файлы
+# Настройки безопасности и доступа
+AWS_QUERYSTRING_AUTH = False
+AWS_DEFAULT_ACL = 'public-read'  # Важно для Supabase
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_SIGNATURE_VERSION = 's3v4'  # ПРАВИЛЬНАЯ версия!
+AWS_IS_GZIPPED = True
+
+# Отключаем SSL проверку для отладки (можно включить позже)
+AWS_S3_VERIFY = False
 
 # Django 6.0 STORAGES
 STORAGES = {
@@ -168,11 +172,6 @@ STORAGES = {
 SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
 MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
 STATIC_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
-
-# Отключаем SSL для локальной разработки (если нужно)
-if DEBUG:
-    AWS_S3_USE_SSL = True
-    AWS_S3_VERIFY = True
 
 if not DEBUG:
     LOGGING['handlers']['console'] = {

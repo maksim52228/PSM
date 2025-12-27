@@ -170,6 +170,6 @@ if not DEBUG:
         if logger_name not in LOGGING['loggers']:
             LOGGING['loggers'][logger_name] = {
                 'handlers': ['console'],
-                'level': 'DEBUG',
+                'level': 'WARNING',
                 'propagate': True,
             }

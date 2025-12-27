@@ -142,7 +142,6 @@ AWS_SECRET_ACCESS_KEY = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f
 AWS_STORAGE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='psm-media')
 AWS_S3_ENDPOINT_URL = config('SUPABASE_ENDPOINT_URL', default='https://etcczklqfqdsomasmfcg.storage.supabase.co/storage/v1/s3')  # Без пробелов!
 AWS_S3_REGION_NAME = 'eu-west-3'
-AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_ADDRESSING_STYLE = 'path'
 
@@ -160,6 +159,11 @@ STORAGES = {
 MEDIA_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
 STATIC_URL = f'https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 
+# Логирование boto3 для отладки
+import logging
+logging.basicConfig()
+logging.getLogger('boto3').setLevel(logging.DEBUG)
+logging.getLogger('botocore').setLevel(logging.DEBUG)
 
 if not DEBUG:
     LOGGING['handlers']['console'] = {
@@ -170,6 +174,6 @@ if not DEBUG:
         if logger_name not in LOGGING['loggers']:
             LOGGING['loggers'][logger_name] = {
                 'handlers': ['console'],
-                'level': 'WARNING',
+                'level': 'DEBUG',
                 'propagate': True,
             }

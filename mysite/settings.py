@@ -64,7 +64,7 @@ STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
 # ============ STATIC FILES (локально на Render) ============
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 
 # Используем WhiteNoise для статики
 

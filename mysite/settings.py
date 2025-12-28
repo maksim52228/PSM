@@ -9,15 +9,95 @@ from pathlib import Path
 from decouple import config
 import dj_database_url
 
+# Build paths
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-&&+pzhqbsetsd88pg!uj(=!30msp-sh)wsbr8impz6i1*$!9l)')
+DEBUG = config('DEBUG', default=True, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+
+# ============ DATABASE ============
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
+# ============ ВСЕ ИЗОБРАЖЕНИЯ В SUPABASE ============
+
+# Supabase настройки
+SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
+SUPABASE_BUCKET = 'psm-media'
+SUPABASE_KEY = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
+SUPABASE_SECRET = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
+
+# Настройки S3 для Supabase
+AWS_ACCESS_KEY_ID = SUPABASE_KEY
+AWS_SECRET_ACCESS_KEY = SUPABASE_SECRET
+AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET
+AWS_S3_ENDPOINT_URL = f'https://{SUPABASE_PROJECT_ID}.storage.supabase.co'
+AWS_S3_REGION_NAME = 'eu-west-3'
+AWS_QUERYSTRING_AUTH = False
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_VERIFY = True
+
+# Django 6.0 STORAGES - ВСЕ файлы через Supabase
+STORAGES = {
+    "default": {"BACKEND": "mysite.rest_storage.MediaStorage"},
+    "staticfiles": {"BACKEND": "mysite.rest_storage.StaticStorage"},
+}
+
+# URL для файлов
+STATIC_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{SUPABASE_BUCKET}/static/'
+MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{SUPABASE_BUCKET}/media/'
+
+# Уберите локальные настройки статики (если есть)
+# STATIC_ROOT = BASE_DIR / 'staticfiles'  # ← ЗАКОММЕНТИРУЙТЕ
+# STATICFILES_DIRS = [BASE_DIR / 'static']  # ← ЗАКОММЕНТИРУЙТЕ
+
+# Добавьте для правильной работы static тега
+STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
+# ============ STATIC FILES (локально на Render) ============
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Используем WhiteNoise для статики
+
+
+# Настройки WhiteNoise
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_ALLOW_ALL_ORIGINS = True
+# Supabase настройки
+SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
+SUPABASE_BUCKET = 'psm-media'
+SUPABASE_KEY = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
+SUPABASE_SECRET = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
+
+# Настройки S3 для Supabase
+
+
+# URL для файлов
+
+# Уберите локальные настройки статики (если есть)
+# STATIC_ROOT = BASE_DIR / 'staticfiles'  # ← ЗАКОММЕНТИРУЙТЕ
+# STATICFILES_DIRS = [BASE_DIR / 'static']  # ← ЗАКОММЕНТИРУЙТЕ
+
+# Добавьте для правильной работы static тега
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-&&+pzhqbsetsd88pg!uj(=!30msp-sh)wsbr8impz6i1*$!9l)')
+# Quick-start development settings
 
-DEBUG = config('DEBUG', default=True, cast=bool)
-
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+# Проверяем, отключен ли Supabase для деплоя
+DISABLE_SUPABASE = config('DISABLE_SUPABASE', default=False, cast=bool)
 
 # Application definition
 INSTALLED_APPS = [
@@ -44,7 +124,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',  # ← ИСПРАВЛЕНО!
     'axes.middleware.AxesMiddleware',
 ]
 
@@ -69,13 +149,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-}
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -137,41 +211,17 @@ LOGGING = {
 # ============ SUPABASE STORAGE ============
 
 # Supabase S3 Credentials
-SUPABASE_KEY = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
-SUPABASE_SECRET = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
 
 # Обязательные настройки для S3/Supabase
-AWS_ACCESS_KEY_ID = SUPABASE_KEY
-AWS_SECRET_ACCESS_KEY = SUPABASE_SECRET
-AWS_STORAGE_BUCKET_NAME = 'psm-media'
-AWS_S3_ENDPOINT_URL = 'https://etcczklqfqdsomasmfcg.storage.supabase.co'
-AWS_S3_REGION_NAME = 'eu-west-3'  # или 'us-east-1' если не работает
-
-# Настройки безопасности и доступа
-AWS_QUERYSTRING_AUTH = False
-AWS_DEFAULT_ACL = 'public-read'  # Важно для Supabase
-AWS_S3_FILE_OVERWRITE = False
-AWS_S3_ADDRESSING_STYLE = 'path'
-AWS_S3_SIGNATURE_VERSION = 's3v4'  # ПРАВИЛЬНАЯ версия!
 AWS_IS_GZIPPED = True
 
 # Отключаем SSL проверку для отладки (можно включить позже)
-AWS_S3_VERIFY = False
+
 
 # Django 6.0 STORAGES
-STORAGES = {
-    "default": {
-        "BACKEND": "mysite.storages.MediaStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "mysite.storages.StaticStorage",
-    },
-}
+
 
 # Публичные URL для шаблонов
-SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
-MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/media/'
-STATIC_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}/staticfiles/'
 
 if not DEBUG:
     LOGGING['handlers']['console'] = {

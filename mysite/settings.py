@@ -193,17 +193,22 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'admin_access.log',
+        'console': {
+            'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
         'myapp.admin': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'INFO',
-            'propagate': True,
+        },
+        'axes': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
         },
     },
 }

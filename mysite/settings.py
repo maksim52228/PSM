@@ -12,11 +12,14 @@ import dj_database_url
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ============ ОСНОВНЫЕ НАСТРОЙКИ ============
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-&&+pzhqbsetsd88pg!uj(=!30msp-sh)wsbr8impz6i1*$!9l)')
 DEBUG = config('DEBUG', default=True, cast=bool)
+
+# Исправляем ALLOWED_HOSTS
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
-# ============ DATABASE ============
+# ============ БАЗА ДАННЫХ ============
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL', default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')),
@@ -24,151 +27,8 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
-# ============ ВСЕ ИЗОБРАЖЕНИЯ В SUPABASE ============
-
-# Supabase настройки
-SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
-SUPABASE_BUCKET = 'psm-media'
-SUPABASE_KEY = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
-SUPABASE_SECRET = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
-
-# Настройки S3 для Supabase
-AWS_ACCESS_KEY_ID = SUPABASE_KEY
-AWS_SECRET_ACCESS_KEY = SUPABASE_SECRET
-AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET
-AWS_S3_ENDPOINT_URL = f'https://{SUPABASE_PROJECT_ID}.storage.supabase.co'
-AWS_S3_REGION_NAME = 'eu-west-3'
-AWS_QUERYSTRING_AUTH = False
-AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_FILE_OVERWRITE = False
-AWS_S3_ADDRESSING_STYLE = 'path'
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_S3_VERIFY = True
-
-# Django 6.0 STORAGES - ВСЕ файлы через Supabase
-STORAGES = {
-    "default": {"BACKEND": "mysite.rest_storage.MediaStorage"},
-    "staticfiles": {"BACKEND": "mysite.rest_storage.StaticStorage"},
-}
-
-# URL для файлов
-STATIC_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{SUPABASE_BUCKET}/static/'
-MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{SUPABASE_BUCKET}/media/'
-
-# Уберите локальные настройки статики (если есть)
-# STATIC_ROOT = BASE_DIR / 'staticfiles'  # ← ЗАКОММЕНТИРУЙТЕ
-# STATICFILES_DIRS = [BASE_DIR / 'static']  # ← ЗАКОММЕНТИРУЙТЕ
-
-# Добавьте для правильной работы static тега
-STATICFILES_STORAGE = 'mysite.storages.StaticStorage'
-# ============ STATIC FILES (локально на Render) ============
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-# Используем WhiteNoise для статики
-
-
-# Настройки WhiteNoise
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_ALLOW_ALL_ORIGINS = True
-# Supabase настройки
-SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
-SUPABASE_BUCKET = 'psm-media'
-SUPABASE_KEY = config('SUPABASE_KEY', default='0d1f99967b6d9bbf47d92583ed12e203')
-SUPABASE_SECRET = config('SUPABASE_SECRET', default='a0545ae325dff7da7ff3f80c22d203a7ae74275f3a60568a77e0949baff38e71')
-
-# Настройки S3 для Supabase
-
-
-# URL для файлов
-
-# Уберите локальные настройки статики (если есть)
-# STATIC_ROOT = BASE_DIR / 'staticfiles'  # ← ЗАКОММЕНТИРУЙТЕ
-# STATICFILES_DIRS = [BASE_DIR / 'static']  # ← ЗАКОММЕНТИРУЙТЕ
-
-# Добавьте для правильной работы static тега
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Quick-start development settings
-
-# Проверяем, отключен ли Supabase для деплоя
-DISABLE_SUPABASE = config('DISABLE_SUPABASE', default=False, cast=bool)
-
-# Application definition
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Third party apps
-    'storages',
-    'axes',
-
-    # Local apps
-    'myapp',
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',  # ← ИСПРАВЛЕНО!
-    'axes.middleware.AxesMiddleware',
-]
-
-ROOT_URLCONF = 'mysite.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'mysite.wsgi.application'
-
-# Database
-
-
-# Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Email settings
+LANGUAGE_CODE = 'ru-ru'
+# ============ EMAIL НАСТРОЙКИ ============
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
@@ -177,18 +37,53 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='i-max8@yandex.ru')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='uqskmaatutlhzmie')
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='i-max8@yandex.ru')
 
-# Authentication backends
+# ============ SUPABASE НАСТРОЙКИ ============
+SUPABASE_PROJECT_ID = 'etcczklqfqdsomasmfcg'
+SUPABASE_BUCKET = 'psm-media'
+
+# ============ СТАТИКА и МЕДИА ФАЙЛЫ ============
+
+# Проверяем, отключен ли Supabase для статики (например, на Render)
+DISABLE_SUPABASE_STORAGE = config('DISABLE_SUPABASE_STORAGE', default=False, cast=bool)
+
+# ВСЕГДА используем локальную статику для админки, CSS, JS и т.д.
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Медиафайлы (загруженные пользователем) — в Supabase
+MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{SUPABASE_BUCKET}/media/'
+DEFAULT_FILE_STORAGE = 'mysite.rest_storage.MediaStorage'  # твой кастомный бэкенд
+
+# WhiteNoise для статики в продакшене
+STORAGES = {
+    "default": {"BACKEND": "mysite.rest_storage.MediaStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
+# ============ WHITE NOISE ============
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Должен быть вторым
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
+]
+
+# ============ AUTHENTICATION ============
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# Axes settings
+# ============ AXES ============
 AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = 1
 AXES_RESET_ON_SUCCESS = True
 
-# Logging
+# ============ LOGGING ============
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -213,21 +108,6 @@ LOGGING = {
     },
 }
 
-# ============ SUPABASE STORAGE ============
-
-# Supabase S3 Credentials
-
-# Обязательные настройки для S3/Supabase
-AWS_IS_GZIPPED = True
-
-# Отключаем SSL проверку для отладки (можно включить позже)
-
-
-# Django 6.0 STORAGES
-
-
-# Публичные URL для шаблонов
-
 if not DEBUG:
     LOGGING['handlers']['console'] = {
         'level': 'WARNING',
@@ -240,3 +120,98 @@ if not DEBUG:
                 'level': 'WARNING',
                 'propagate': True,
             }
+
+# ============ APPLICATIONS ============
+INSTALLED_APPS = [
+    'jazzmin',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'storages',
+    'axes',
+    'myapp',
+]
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+JAZZMIN_SETTINGS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-navy",  # или "navbar-purple"
+    "accent": "accent-primary",
+    "navbar": "navbar-navy navbar-dark",  # или "navbar-indigo"
+    "no_navbar_border": True,
+    "sidebar": "sidebar-dark-navy",      # или "sidebar-dark-indigo"
+    "custom_css": "myapp/css/admin-custom.css",
+    "custom_js": "myapp/js/admin-custom.js",
+    "site_title": "ПСМ Админка",
+    "site_header": "ПромСпецМонтаж",
+    "welcome_sign": "Добро пожаловать в панель управления",
+    "copyright": "ООО «ПромСпецМонтаж»",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["myapp", "auth", "contenttypes", "sessions"],
+
+    # Цветовая схема (светлая)
+    "theme": "flatly",  # или "cerulean", "cosmo", "lumen", "minty"
+    "dark_mode_theme": None,  # отключаем тёмную тему
+
+    # Логотип (опционально)
+    "site_logo": "myapp/images/logo-admin.jpg",  # положите в static
+    "login_logo": None,
+
+    # Иконки для моделей (очень круто!)
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "myapp.News": "fas fa-newspaper",
+        "myapp.Work": "fas fa-building",
+        "myapp.Employee": "fas fa-hard-hat",
+    },
+}
+# ============ TEMPLATES ============
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': DEBUG,
+        },
+    },
+]
+
+WSGI_APPLICATION = 'mysite.wsgi.application'
+
+# ============ PASSWORD VALIDATION ============
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+# ============ INTERNATIONALIZATION ============
+
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ============ ROOT URL CONFIG ============
+ROOT_URLCONF = 'mysite.urls'

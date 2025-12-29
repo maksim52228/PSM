@@ -1,34 +1,66 @@
-from storages.backends.s3boto3 import S3Boto3Storage
+import os
+import requests
+from django.core.files.storage import Storage
+from django.utils.deconstruct import deconstructible
+from django.conf import settings
+from decouple import config
 
 
-class SupabaseStorage(S3Boto3Storage):
-    """
-    Базовый класс для Supabase Storage
-    """
-    bucket_name = 'psm-media'
-    location = ''
-    file_overwrite = False
-    default_acl = 'public-read'
-    querystring_auth = False
-    signature_version = 's3v4'  # Правильная версия подписи
+@deconstructible
+class SupabaseStorage(Storage):
+    def __init__(self, bucket=None, base_path=None):
+        self.bucket = bucket or getattr(settings, 'SUPABASE_BUCKET', 'psm-media')
+        self.base_path = base_path or ''
+        self.project_ref = getattr(settings, 'SUPABASE_PROJECT_REF', 'etcczklqfqdsomasmfcg')
+        self.service_role_key = config('SUPABASE_SERVICE_ROLE_KEY')
+        if not self.service_role_key:
+            raise ValueError("SUPABASE_SERVICE_ROLE_KEY is required")
 
-    def __init__(self, *args, **kwargs):
-        # Устанавливаем endpoint_url для Supabase
-        self.endpoint_url = 'https://etcczklqfqdsomasmfcg.storage.supabase.co'
-        super().__init__(*args, **kwargs)
+    def _get_url(self, name):
+        path = f"{self.base_path}/{name}".lstrip('/')
+        return f"https://{self.project_ref}.supabase.co/storage/v1/object/{self.bucket}/{path}"
+
+    def _get_public_url(self, name):
+        path = f"{self.base_path}/{name}".lstrip('/')
+        return f"https://{self.project_ref}.supabase.co/storage/v1/object/public/{self.bucket}/{path}"
+
+    def _save(self, name, content):
+        # Убедись, что путь не начинается с /
+        full_path = f"{self.base_path}/{name}".lstrip("/")
+        url = f"https://{self.project_ref}.supabase.co/storage/v1/object/{self.bucket}/{full_path}"
+
+        headers = {
+            "Authorization": f"Bearer {self.service_role_key}",
+            "Content-Type": getattr(content, 'content_type', 'application/octet-stream'),
+            "x-upsert": "true",  # разрешить перезапись
+        }
+
+        content.seek(0)
+        file_data = content.read()
+
+        response = requests.put(url, data=file_data, headers=headers, timeout=30)
+        response.raise_for_status()  # вызовет исключение при 4xx/5xx
+
+        return name
 
     def url(self, name):
-        # Кастомный URL для Supabase
-        if self.location:
-            return f"https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{self.bucket_name}/{self.location}/{name}"
-        return f"https://etcczklqfqdsomasmfcg.supabase.co/storage/v1/object/public/{self.bucket_name}/{name}"
+        return self._get_public_url(name)
+
+    def exists(self, name):
+        # Можно улучшить, но для Supabase часто не критично
+        return False
+
+    def delete(self, name):
+        url = self._get_url(name)
+        headers = {'Authorization': f'Bearer {self.service_role_key}'}
+        requests.delete(url, headers=headers)
 
 
+# Эти классы ОСТАВЛЯЕМ
 class MediaStorage(SupabaseStorage):
-    location = 'media'
-    file_overwrite = False
-
+    def __init__(self):
+        super().__init__(base_path='media')
 
 class StaticStorage(SupabaseStorage):
-    location = 'staticfiles'
-    file_overwrite = True
+    def __init__(self):
+        super().__init__(base_path='staticfiles')

@@ -1,0 +1,625 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block title %}ПСМ - Профессиональные Электромонтажные Работы{% endblock %}
+
+{% block content %}
+<!-- Мобильное меню -->
+<header class="fixed-header bg-white bg-opacity-75 py-2 d-block d-lg-none">
+    <div class="container-fluid">
+        <button class="btn btn-primary w-100 py-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
+            <i class="fas fa-bars me-2"></i>Меню
+        </button>
+        <div class="collapse mt-2" id="mobileMenu">
+            <div class="d-grid gap-2">
+                <a class="btn btn-outline-primary" href="#home">Главная</a>
+                <a class="btn btn-outline-primary" href="#news">Новости</a>
+                <a class="btn btn-outline-primary" href="#about">О нас</a>
+                <a class="btn btn-outline-primary" href="#works">Объекты</a>
+                <a class="btn btn-outline-primary" href="#team">Команда</a>
+                <a class="btn btn-outline-primary" href="{% url 'chat' %}">Чат</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Десктопное меню -->
+<header class="fixed-header bg-white bg-opacity-75 py-2 d-none d-lg-block">
+    <div class="container-fluid d-flex justify-content-center">
+        <nav class="d-flex flex-wrap justify-content-center gap-3">
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#home">ПСМ</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#news">Новости</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#about">О нас</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#works">Объекты</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#team">Команда</a>
+            <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="{% url 'chat' %}">Чат</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Герой-секция -->
+<section id="home" class="hero-section py-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "myapp/images/LEP.jpg" %}') no-repeat center/cover; min-height: 80vh; display: flex; align-items: center;">
+    <div class="container px-3 text-center text-white">
+        <div class="row justify-content-center">
+            <div class="container col-12">
+                <h1 class="fw-bold flowing-wave-single"
+                    style="font-size: clamp(2rem, 6vw, 4rem);
+                           line-height: 1.2;
+                           margin-bottom: 1.5rem;
+                           text-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                    ПромСпецМонтаж
+                </h1>
+
+                <style>
+                .flowing-wave-single {
+                    background: linear-gradient(90deg, #FFFFFF 0%, #6c63ff 10%, #6c63ff 15%, #FFFFFF 30%);
+                    background-size: 200% 100%;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    color: transparent;
+                    animation: waveFlow 2.5s linear infinite;
+                    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                @keyframes waveFlow {
+                    0% { background-position: -100% 0; }
+                    100% { background-position: 100% 0; }
+                }
+                
+                /* Стили для кнопок */
+                .hero-btn {
+                    border-radius: 50px !important;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                }
+                
+                .hero-btn:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+                }
+                
+                .hero-btn:active {
+                    transform: translateY(0);
+                }
+                
+                /* Анимация появления контента */
+                .hero-content {
+                    opacity: 0;
+                    transform: translateY(30px);
+                    animation: fadeInUp 1s ease forwards;
+                }
+                
+                @keyframes fadeInUp {
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                .hero-content:nth-child(2) { animation-delay: 0.2s; }
+                .hero-content:nth-child(3) { animation-delay: 0.4s; }
+                </style>
+
+                <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                    <a href="#news" class="btn btn-primary px-md-4 py-2 py-md-3 fs-6 fs-md-5 hero-btn">
+                        <i class="fas fa-newspaper me-2"></i>Новости
+                    </a>
+                    <a href="{% url 'news_list' %}" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5 hero-btn">
+                        <i class="fas fa-list me-2"></i>Все новости
+                    </a>
+                    <a href="#team" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5 hero-btn">
+                        <i class="fas fa-users me-1"></i>Команда
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Новости -->
+<section id="news" class="py-4 bg-gradient">
+    <div class="container px-3 py-4">
+        <h2 class="h3 pb-2 border-bottom text-center mb-5">
+            <span class="position-relative">
+                Последние новости
+                <span class="position-absolute bottom-0 start-50 translate-middle-x w-25 border-bottom border-primary" style="border-width: 3px !important;"></span>
+            </span>
+        </h2>
+        <div class="row g-4 py-3">
+            {% for news_item in latest_news %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease;">
+                    <div class="position-relative overflow-hidden">
+                        {% if news_item.images.first %}
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="{{ news_item.images.first.image.url }}"
+                                 class="img-fluid w-100 h-100 transition-transform"
+                                 alt="{{ news_item.title }}"
+                                 style="object-fit: cover; transition: transform 0.3s ease;">
+                        </div>
+                        {% endif %}
+                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-b from-transparent to-black opacity-50"></div>
+                    </div>
+                    <div class="card-body" style="background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);">
+                        <h3 class="h5 card-title fw-bold mb-2">{{ news_item.title }}</h3>
+                        <p class="text-muted small mb-2">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            {{ news_item.date_posted|date:"d.m.Y" }}
+                        </p>
+                        <p class="card-text small text-muted">{{ news_item.content|truncatewords:0 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a href="{% url 'news_detail' news_item.pk %}" class="btn btn-primary w-100 rounded-pill">
+                            Читать далее
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="text-muted">
+                    <i class="fas fa-newspaper fa-3x mb-3"></i>
+                    <p class="mb-0">Новости пока отсутствуют</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'news_list' %}" class="btn btn-outline-primary rounded-pill px-4 py-2">
+                <i class="fas fa-list me-1"></i> Все новости
+            </a>
+        </div>
+    </div>
+    
+    <style>
+    .bg-gradient {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .transition-transform:hover {
+        transform: scale(1.05);
+    }
+    
+    .from-transparent {
+        background: linear-gradient(to bottom, transparent, black);
+    }
+    </style>
+</section>
+
+<!-- О компании -->
+<section id="about" class="py-4">
+    <div class="container px-3 py-4" style="background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('{% static "myapp/images/electro-bg.jpg" %}') no-repeat center/cover; background-size: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <div class="text-white">
+            <h2 class="h3 pb-3 border-bottom mb-4">
+                <span class="position-relative">
+                    О компании 
+                    <span class="position-absolute bottom-0 start-0 w-25 border-bottom border-primary" style="border-width: 3px !important;"></span>
+                </span>
+            </h2>
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="small me-2 ps-3 pe-3">
+                        <p class="lead mb-4">Общество с ограниченной ответственностью «ПромСпецМонтаж» (ООО «ПСМ») образовано в 2019 году, путем реорганизации и слияния нескольких строительно-монтажных компаний, вобрав в себя весь положительный опыт работы на строительных объектах Красноярского края, включая Таймырский автономный округ.</p>
+
+                        <p class="mb-4">Сотрудники компании являются специалистами, имеющими многолетний опыт работы на объектах промышленного и жилищного строительства, устройства инженерной инфраструктуры крупных медицинских и образовательных учреждений, реконструкции и строительства спортивных объектов Универсиады 2019 года и имеют почетные грамоты и благодарственные письма от губернатора Красноярского края.</p>
+
+                        <h5 class="mt-4 mb-3 h6">Основные направления деятельности:</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-white bg-opacity-10 rounded">
+                                    <h6 class="text-primary mb-2"><i class="fas fa-cogs me-2"></i>Проектирование</h6>
+                                    <p class="mb-0 small">Силовых и слаботочных кабельных систем инженерного обеспечения зданий жилищного и промышленного строительства</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-white bg-opacity-10 rounded">
+                                    <h6 class="text-primary mb-2"><i class="fas fa-tools me-2"></i>Монтаж</h6>
+                                    <p class="mb-0 small">Силовых электрических сетей, систем охрано-пожарной сигнализации, СКУД и информационных сетей любой сложности</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-white bg-opacity-10 rounded">
+                                    <h6 class="text-primary mb-2"><i class="fas fa-bolt me-2"></i>Пуско-наладочные работы</h6>
+                                    <p class="mb-0 small">Силовых и слаботочных систем с гарантией качества и безопасности</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-4 mb-0">Основным направлением деятельности компании являются электромонтажные работы любой сложности. Мы работаем по всему Красноярскому краю и за его пределами. Специалистами нашей компании реализован ряд крупных проектов в таких городах как Норильск, Красноярск, Ачинск, Минусинск.</p>
+
+                        <p class="mb-0">ООО «ПСМ» располагает собственным штатом квалифицированных специалистов, монтажных бригад и готово к реализации любых технически сложных проектов и сдачи выполненных работ «под ключ».</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Наши работы -->
+<section id="works" class="py-4">
+    <div class="container px-3 py-4">
+        <h2 class="h3 pb-3 border-bottom text-center mb-5">
+            <span class="position-relative">
+                Наши работы
+                <span class="position-absolute bottom-0 start-50 translate-middle-x w-25 border-bottom border-primary" style="border-width: 3px !important;"></span>
+            </span>
+        </h2>
+
+        <div class="works-carousel-wrapper py-3">
+            <div class="works-carousel-track" id="worksTrack">
+                {% for work in works %}
+                <div class="works-carousel-slide">
+                    <div class="card h-100 shadow-sm mx-2 border-0" style="max-width: 400px; border-radius: 15px; overflow: hidden; transition: transform 0.3s ease;">
+                        <div style="height: 250px; overflow: hidden;" class="position-relative">
+                            <img src="{{ work.photo.url }}" class="img-fluid w-100 h-100 transition-transform"
+                                 alt="{{ work.name }}" style="object-fit: cover; transition: transform 0.3s ease;">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-b from-transparent to-black opacity-70"></div>
+                        </div>
+                        <div class="card-body" style="background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);">
+                            <h3 class="h5 card-title fw-bold mb-2">{{ work.name }}</h3>
+                            {% if work.bio %}
+                            <p class="card-text small text-muted mb-0" style="white-space: pre-line;">{{ work.bio }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="works-carousel-slide">
+                    <div class="alert alert-info small text-center">
+                        <i class="fas fa-info-circle fa-2x mb-2"></i>
+                        <p class="mb-0">Портфолио наших работ в процессе наполнения</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="works-carousel-btn works-carousel-prev" aria-label="Previous">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="works-carousel-btn works-carousel-next" aria-label="Next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <div class="text-center mt-5 position-relative">
+            <div class="arrow-pointer" style="
+                position: absolute;
+                top: -40px;
+                left: 50%;
+                transform: translateX(-50%);
+                animation: bounce 2s infinite;
+                font-size: 28px;
+                color: #6c63ff;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            ">
+                ↓
+            </div>
+
+            <a href="{% url 'works' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 position-relative" style="z-index: 1; box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);">
+                <i class="fas fa-list me-2"></i> Все объекты
+            </a>
+        </div>
+    </div>
+
+    <style>
+    .works-carousel-wrapper {
+        position: relative;
+        overflow: hidden;
+        padding: 0 50px;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    .works-carousel-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        padding: 10px 0;
+    }
+
+    .works-carousel-slide {
+        flex: 0 0 33.333%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 992px) {
+        .works-carousel-slide {
+            flex: 0 0 50%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .works-carousel-slide {
+            flex: 0 0 100%;
+        }
+        .works-carousel-wrapper {
+            padding: 0 40px;
+        }
+    }
+
+    .works-carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(108, 99, 255, 0.9);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .works-carousel-prev {
+        left: 10px;
+    }
+
+    .works-carousel-next {
+        right: 10px;
+    }
+
+    .works-carousel-btn:hover {
+        background: #6c63ff;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .works-carousel-next.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+    
+    .transition-transform:hover {
+        transform: scale(1.05);
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+        40% {
+            transform: translateX(-50%) translateY(-10px);
+        }
+        60% {
+            transform: translateX(-50%) translateY(-5px);
+        }
+    }
+
+    .arrow-pointer:hover {
+        color: #4a43d2;
+        animation: none;
+        transform: translateX(-50%) scale(1.2);
+    }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('worksTrack');
+        const slides = Array.from(track.querySelectorAll('.works-carousel-slide'));
+        const nextBtn = document.querySelector('.works-carousel-next');
+        const prevBtn = document.querySelector('.works-carousel-prev');
+
+        if (!track || slides.length === 0) return;
+
+        let currentIndex = 0;
+        let autoSlideInterval;
+        let slidesToShow = getSlidesToShow();
+
+        function getSlidesToShow() {
+            if (window.innerWidth >= 992) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        }
+
+        function isAtEnd() {
+            return currentIndex >= slides.length - slidesToShow;
+        }
+
+        function updateButtons() {
+            nextBtn.classList.toggle('disabled', isAtEnd());
+            prevBtn.classList.toggle('disabled', currentIndex === 0);
+        }
+
+        const moveToSlide = (index) => {
+            if (index < 0) index = 0;
+            if (index > slides.length - slidesToShow) index = slides.length - slidesToShow;
+
+            const slideWidth = slides[0].offsetWidth;
+            track.style.transform = `translateX(-${index * slideWidth}px)`;
+            currentIndex = index;
+            updateButtons();
+        };
+
+        const startAutoSlide = () => {
+            autoSlideInterval = setInterval(() => {
+                if (!isAtEnd()) {
+                    moveToSlide(currentIndex + 1);
+                } else {
+                    moveToSlide(0);
+                }
+            }, 5000);
+        };
+
+        track.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        track.addEventListener('mouseleave', startAutoSlide);
+
+        nextBtn.addEventListener('click', () => {
+            if (!isAtEnd()) {
+                moveToSlide(currentIndex + 1);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            moveToSlide(currentIndex - 1);
+        });
+
+        window.addEventListener('resize', () => {
+            slidesToShow = getSlidesToShow();
+            moveToSlide(Math.min(currentIndex, slides.length - slidesToShow));
+        });
+
+        updateButtons();
+        moveToSlide(0);
+        startAutoSlide();
+        
+        const arrow = document.querySelector('.arrow-pointer');
+        if (arrow) {
+            arrow.addEventListener('click', function() {
+                document.querySelector('a[href="{% url 'works' %}"]').click();
+            });
+        }
+    });
+    </script>
+</section>
+
+<!-- Команда -->
+<section id="team" class="py-4 bg-gradient">
+    <div class="container px-3 py-4">
+        <h2 class="h3 pb-3 border-bottom text-center mb-5">
+            <span class="position-relative">
+                Наша команда
+                <span class="position-absolute bottom-0 start-50 translate-middle-x w-25 border-bottom border-primary" style="border-width: 3px !important;"></span>
+            </span>
+        </h2>
+
+        <div class="row g-4 py-3">
+            {% for employee in employees %}
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="card h-100 shadow-sm border-0 text-center" style="border-radius: 20px; overflow: hidden; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+                    <div class="position-relative">
+                        <img src="{{ employee.photo.url }}" class="card-img-top rounded-circle mx-auto mt-4 transition-transform"
+                             alt="{{ employee.name }}" style="width: 150px; height: 150px; object-fit: cover; border: 5px solid white; transition: transform 0.3s ease;">
+                        <div class="position-absolute bottom-0 start-0 w-100 text-center mb-3">
+                            <div class="d-inline-block bg-white bg-opacity-90 px-3 py-1 rounded-pill">
+                                <p class="text-primary small mb-0 fw-bold">{{ employee.position }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-5">
+                        <h3 class="h5 card-title fw-bold mb-2">{{ employee.name }}</h3>
+                        {% if employee.bio %}
+                        <p class="card-text small text-muted">{{ employee.bio }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="text-muted">
+                    <i class="fas fa-users fa-3x mb-3"></i>
+                    <p class="mb-0">Информация о сотрудниках пока отсутствует</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <style>
+    .bg-gradient {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .transition-transform:hover {
+        transform: scale(1.05);
+    }
+    </style>
+</section>
+
+<!-- Контакты -->
+<section id="contact" class="py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container px-3 py-4">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6 text-center mb-4 mb-md-0">
+                <div class="d-inline-block bg-white p-4 rounded-3 shadow-lg">
+                    <img src="{% static 'myapp/images/psm_qr.jpg' %}" alt="QR-код" class="img-fluid" style="max-height: 200px; border-radius: 10px;">
+                </div>
+            </div>
+            <div class="col-md-6 text-white text-center text-md-start">
+                <h3 class="h4 mb-4 fw-bold">Контактная информация</h3>
+                <div class="small">
+                    <p class="mb-2"><strong>Общество с ограниченной ответственностью</strong></p>
+                    <p class="mb-2"><strong>«ПромСпецМонтаж»</strong></p>
+                    <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>660020, г.Красноярск, ул.Шахтеров, д.4, стр.8, оф.3</p>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i>info@psm-company.ru</p>
+                    <p class="mb-2"><i class="fas fa-id-card me-2"></i>ОКПО 35378835, ОГРН 1192468000295</p>
+                    <p class="mb-0"><i class="fas fa-building me-2"></i>ИНН/КПП 2465191182/246501001</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Закрытие мобильного меню после клика
+    document.querySelectorAll('#mobileMenu a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var collapse = document.getElementById('mobileMenu');
+            if (collapse.classList.contains('show')) {
+                var bsCollapse = new bootstrap.Collapse(collapse, {
+                    toggle: false
+                });
+                bsCollapse.hide();
+            }
+        });
+    });
+
+    // Плавная прокрутка
+    document.body.addEventListener('click', function(e) {
+        if (e.target.closest('a[href^="#"]')) {
+            e.preventDefault();
+            const targetId = e.target.closest('a').getAttribute('href');
+            if (targetId === '#') return;
+
+            const target = document.querySelector(targetId);
+            if (target) {
+                const offset = 70;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+
+                history.pushState(null, null, targetId);
+            }
+        }
+    });
+    
+    // Анимация при скролле
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Наблюдение за карточками
+    document.querySelectorAll('.card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

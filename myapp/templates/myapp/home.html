@@ -4,6 +4,7 @@
 {% block title %}ПСМ - Профессиональные Электромонтажные Работы{% endblock %}
 
 {% block content %}
+
 <!-- Мобильное меню -->
 <header class="fixed-header bg-white bg-opacity-75 py-2 d-block d-lg-none">
     <div class="container-fluid">
@@ -26,7 +27,7 @@
 <!-- Десктопное меню -->
 <header class="fixed-header bg-white bg-opacity-75 py-2 d-none d-lg-block">
     <div class="container-fluid d-flex justify-content-center">
-        <nav class="d-flex flex-wrap justify-content-center gap-3">  <!-- Увеличено расстояние между кнопками -->
+        <nav class="d-flex flex-wrap justify-content-center gap-3">
             <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#home">ПСМ</a>
             <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#news">Новости</a>
             <a class="nav-btn-primary btn btn-outline-primary text-#6c63ff px-4 py-2" href="#about">О нас</a>
@@ -41,39 +42,22 @@
 <section id="home" class="hero-section py-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "myapp/images/LEP.jpg" %}') no-repeat center/cover; min-height: 80vh; display: flex; align-items: center;">
     <div class="container px-3 text-center text-white">
         <div class="row justify-content-center">
-            <div class=" container col-12">
+            <div class="container col-12">
                 <h1 class="fw-bold flowing-wave-single"
                     style="font-size: clamp(2rem, 6vw, 4rem);
                            line-height: 1.2;
                            margin-bottom: 1.5rem;">
                     ПромСпецМонтаж
                 </h1>
-
-                <style>
-                .flowing-wave-single {
-                    background: linear-gradient(90deg, #FFFFFF 0%, #6c63ff 10%, #6c63ff 15%, #FFFFFF 30%);
-                    background-size: 200% 100%;
-                    -webkit-background-clip: text;
-                    background-clip: text;
-                    color: transparent;
-                    animation: waveFlow 2.5s linear infinite;
-                    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }
-                @keyframes waveFlow {
-                    0% { background-position: -100% 0; }
-                    100% { background-position: 100% 0; }
-                }
-                </style>
-
                 <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
                     <a href="#news" class="btn btn-primary px-md-4 py-2 py-md-3 fs-6 fs-md-5">
-                        <i class="fas fa-newspaper me-2 " ></i>Новости
+                        <i class="fas fa-newspaper me-2"></i>Новости
                     </a>
-                    <a href="{% url 'news_list' %}" class="btn btn-outline-light  px-md-4 py-2 py-md-3 fs-6 fs-md-5">
+                    <a href="{% url 'news_list' %}" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5">
                         <i class="fas fa-list me-2"></i>Все новости
                     </a>
                     <a href="#team" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5">
-                        <i class="fas fa-users me-1"></i>Команда
+                        <i class="fas fa-users me-1"></i>Руководство
                     </a>
                 </div>
             </div>
@@ -135,9 +119,7 @@
     <div class="container px-3 py-4" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "myapp/images/electro-bg.jpg" %}') no-repeat center/cover; background-size: cover; border-radius: 15px;">
         <div class="text-white">
             <h2 class="h3 pb-2 border-bottom">О компании </h2>
-
-
-            <div class="small me-2 ps-3 ">
+            <div class="small me-2 ps-3">
                 <p>Общество с ограниченной ответственностью «ПромСпецМонтаж» (ООО «ПСМ») образовано в 2019 году, путем реорганизации и слияния нескольких строительно-монтажных компаний, вобрав в себя весь положительный опыт работы на строительных объектах Красноярского края, включая Таймырский автономный округ.</p>
 
                 <p>Сотрудники компании являются специалистами, имеющими многолетний опыт работы на объектах промышленного и жилищного строительства, устройства инженерной инфраструктуры крупных медицинских и образовательных учреждений, реконструкции и строительства спортивных объектов Универсиады 2019 года и имеют почетные грамоты и благодарственные письма от губернатора Красноярского края.</p>
@@ -152,17 +134,13 @@
                 <p>Основным направлением деятельности компании являются электромонтажные работы любой сложности. Мы работаем по всему Красноярскому краю и за его пределами. Специалистами нашей компании реализован ряд крупных проектов в таких городах как Норильск, Красноярск, Ачинск, Минусинск.</p>
 
                 <p>ООО «ПСМ» располагает собственным штатом квалифицированных специалистов, монтажных бригад и готово к реализации любых технически сложных проектов и сдачи выполненных работ «под ключ».</p>
-
-
             </div>
         </div>
-
     </div>
 </section>
 
 <!-- Наши работы -->
 <section id="works" class="py-4">
-
     <div class="container px-3 py-4">
         <div class="text-center mb-4">
             <h2 class="h3 pb-2 border-bottom">Наши работы</h2>
@@ -173,7 +151,7 @@
             <div class="works-carousel-track" id="worksTrack">
                 {% for work in works %}
                 <div class="works-carousel-slide">
-                    <div class="card h-100 shadow-sm mx-2" style="max-width: 400px; transition: all 0.3s ease; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">  <!-- Добавил ограничение по ширине -->
+                    <div class="card h-100 shadow-sm mx-2" style="max-width: 400px; transition: all 0.3s ease; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                         <div style="height: 250px; overflow: hidden;">
                             <img src="{{ work.photo.url }}" class="img-fluid w-100 h-100 rounded"
                                  alt="{{ work.name }}" style="object-fit: cover;" loading="lazy">
@@ -204,277 +182,182 @@
             </button>
         </div>
         <div class="text-center mt-2 position-relative">
-    <!-- Анимированная стрелка -->
-        <div class="arrow-pointer" style="
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            font-size: 24px;
-            color: #6c63ff;
-        ">
-            ↓
+            <div class="arrow-pointer" style="
+                position: absolute;
+                top: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                animation: bounce 2s infinite;
+                font-size: 24px;
+                color: #6c63ff;
+            ">↓</div>
+            <a href="{% url 'works' %}" class="btn btn-outline-primary position-relative" style="z-index: 1;">
+                <i class="fas fa-list me-1"></i> Все объекты
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Руководство -->
+<section id="team" class="py-4 bg-light">
+    <div class="container px-3 py-4">
+        <div class="text-center mb-4">
+            <h2 class="h3 pb-2 border-bottom">Руководство</h2>
+            <div class="divider-line mx-auto" style="width: 60px; height: 3px; background: #6c63ff; border-radius: 2px; margin: 10px auto;"></div>
         </div>
 
-        <!-- Ваша кнопка "Все объекты" -->
-        <a href="{% url 'works' %}" class="btn btn-outline-primary position-relative" style="z-index: 1;">
-            <i class="fas fa-list me-1"></i> Все объекты
-        </a>
+        <div class="row g-4">
+            {% for employee in employees|slice:":2" %}
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100 shadow-sm text-center info-card">
+                        <img src="{{ employee.photo.url }}"
+                             alt="{{ employee.name }}"
+                             class="rounded-circle mx-auto mt-4"
+                             style="width: 160px; height: 160px; object-fit: cover; border: 4px solid #6c63ff;">
+
+                        <div class="card-body px-4 pb-4">
+                            <h3 class="h4 mt-3">{{ employee.name }}</h3>
+                            <p class="text-primary fw-semibold mb-2">{{ employee.position }}</p>
+                            <p class="mb-3">
+                                <i class="fas fa-envelope me-1"></i>
+                                <a href="mailto:{{ employee.email }}" class="link-muted">{{ employee.email }}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Руководство пока не заполнено
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+</section>
 
-    <style>
-    /* Анимация стрелки */
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
-            transform: translateX(-50%) translateY(0);
-        }
-        40% {
-            transform: translateX(-50%) translateY(-10px);
-        }
-        60% {
-            transform: translateX(-50%) translateY(-5px);
-        }
-    }
-
-    /* Дополнительные стили для лучшего отображения */
-    .arrow-pointer {
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .arrow-pointer:hover {
-        color: #4a43d2;
-        animation: none;
-        transform: translateX(-50%) scale(1.2);
-    }
-
-    /* Анимации для карточек новостей */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .col-md-6.col-lg-4 {
-        animation: fadeInUp 0.6s ease-out forwards;
-        opacity: 0;
-    }
-
-    .col-md-6.col-lg-4:nth-child(1) { animation-delay: 0.1s; }
-    .col-md-6.col-lg-4:nth-child(2) { animation-delay: 0.2s; }
-    .col-md-6.col-lg-4:nth-child(3) { animation-delay: 0.3s; }
-    .col-md-6.col-lg-4:nth-child(4) { animation-delay: 0.4s; }
-    .col-md-6.col-lg-4:nth-child(5) { animation-delay: 0.5s; }
-    .col-md-6.col-lg-4:nth-child(6) { animation-delay: 0.6s; }
-
-    /* Анимации для карточек команды */
-    @keyframes slideInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes slideInRight {
-        from {
-            opacity: 0;
-            transform: translateX(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    .col-sm-6.col-md-4:nth-child(odd) {
-        animation: slideInLeft 0.6s ease-out forwards;
-        opacity: 0;
-    }
-
-    .col-sm-6.col-md-4:nth-child(even) {
-        animation: slideInRight 0.6s ease-out forwards;
-        opacity: 0;
-    }
-
-    /* Анимация для карточек работ */
-    @keyframes zoomIn {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    .works-carousel-slide {
-        animation: zoomIn 0.5s ease-out forwards;
-        opacity: 0;
-    }
-
-    /* Плавные переходы для изображений */
-    .card-img-top, .img-fluid {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover .card-img-top,
-    .card:hover .img-fluid {
-        transform: scale(1.05);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-
-    /* Плавные переходы для карточек */
-    .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
-    }
-
-    /* Анимация для кнопок */
-    .btn {
-        transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    /* Анимация для навигационных кнопок */
-    .nav-btn-primary {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .nav-btn-primary::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: left 0.5s;
-    }
-
-    .nav-btn-primary:hover::before {
-        left: 100%;
-    }
-
-    /* Анимация для героя */
-    .hero-section {
-        animation: fadeInScale 1s ease-out forwards;
-    }
-
-    @keyframes fadeInScale {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    /* Анимация для кнопок героя */
-    .hero-section .btn {
-        animation: fadeInUp 0.8s ease-out 0.3s forwards;
-        opacity: 0;
-    }
-
-    .hero-section .btn:nth-child(2) {
-        animation-delay: 0.5s;
-    }
-
-    .hero-section .btn:nth-child(3) {
-        animation-delay: 0.7s;
-    }
-    </style>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Дополнительный скрипт для обработки клика по стрелке
-        const arrow = document.querySelector('.arrow-pointer');
-        if (arrow) {
-            arrow.addEventListener('click', function() {
-                document.querySelector('a[href="{% url 'works' %}"]').click();
-            });
-        }
-
-        // Анимации при скролле
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Сбрасываем анимацию при каждом пересечении
-                    entry.target.style.animation = 'none';
-                    entry.target.offsetHeight; // Триггер перерисовки
-                    entry.target.style.animation = null;
-                    // Запускаем анимацию
-                    if (entry.target.classList.contains('col-md-6') ||
-                        entry.target.classList.contains('col-sm-6')) {
-                        entry.target.style.animationPlayState = 'running';
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Наблюдаем за карточками новостей
-        document.querySelectorAll('.col-md-6.col-lg-4').forEach(card => {
-            card.style.animationPlayState = 'paused';
-            observer.observe(card);
-        });
-
-        // Наблюдаем за карточками команды
-        document.querySelectorAll('.col-sm-6.col-md-4').forEach(card => {
-            card.style.animationPlayState = 'paused';
-            observer.observe(card);
-        });
-
-        // Наблюдаем за слайдами работ
-        document.querySelectorAll('.works-carousel-slide').forEach(slide => {
-            slide.style.animationPlayState = 'paused';
-            observer.observe(slide);
-        });
-
-        // Анимация для секции "О компании"
-        const aboutSection = document.querySelector('#about');
-        if (aboutSection) {
-            const aboutObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        aboutSection.style.animation = 'fadeInScale 0.8s ease-out forwards';
-                    }
-                });
-            }, observerOptions);
-            aboutObserver.observe(aboutSection);
-        }
-    });
-    </script>
-
+<!-- Контакты -->
+<section id="contact" class="py-4">
+    <div class="container px-3">
+        <div class="text-center mb-4">
+            <h2 class="h3">Контакты</h2>
+            <div class="divider-line mx-auto" style="width: 60px; height: 3px; background: #6c63ff; border-radius: 2px; margin: 10px auto;"></div>
+        </div>
+        <div class="row align-items-center g-3 g-md-0">
+            <div class="col-md-5 d-flex justify-content-center">
+                <div class="qr-wrapper rounded-3 overflow-hidden" style="max-width: 200px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+                    <img src="{% static 'myapp/images/psm_qr.jpg' %}"
+                         alt="QR-код для связи"
+                         class="img-fluid w-100"
+                         loading="lazy"
+                         style="object-fit: contain;">
+                </div>
+            </div>
+            <div class="col-md-7 mt-3 mt-md-0">
+                <div class="contact-info small text-muted">
+                    <p class="mb-1"><strong>ООО «ПромСпецМонтаж»</strong></p>
+                    <p class="mb-1">660020, г. Красноярск, ул. Шахтеров, д. 4, стр. 8, оф. 3</p>
+                    <p class="mb-1">E-mail: <a href="mailto:info@psm-company.ru" class="text-decoration-none link-muted">info@psm-company.ru</a></p>
+                    <p class="mb-1">ОКПО 35378835 &nbsp;|&nbsp; ОГРН 1192468000295</p>
+                    <p class="mb-0">ИНН/КПП 2465191182/246501001</p>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-
+<!-- ВСЕ СТИЛИ В ОДНОМ БЛОКЕ -->
 <style>
+/* === АНИМАЦИИ === */
+@keyframes waveFlow {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* === СТИЛИ === */
+.flowing-wave-single {
+    background: linear-gradient(90deg, #FFFFFF 0%, #6c63ff 10%, #6c63ff 15%, #FFFFFF 30%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: waveFlow 2.5s linear infinite;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 .works-carousel-wrapper {
     position: relative;
     overflow: hidden;
@@ -490,25 +373,9 @@
 }
 
 .works-carousel-slide {
-    flex: 0 0 33.333%; /* 3 слайда в ряд */
+    flex: 0 0 33.333%;
     padding: 0 10px;
     box-sizing: border-box;
-}
-
-/* Адаптация для разных экранов */
-@media (max-width: 992px) {
-    .works-carousel-slide {
-        flex: 0 0 50%; /* 2 слайда в ряд */
-    }
-}
-
-@media (max-width: 768px) {
-    .works-carousel-slide {
-        flex: 0 0 100%; /* 1 слайд в ряд */
-    }
-    .works-carousel-wrapper {
-        padding: 0 40px;
-    }
 }
 
 .works-carousel-btn {
@@ -542,31 +409,27 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Скрываем кнопку "вперед" когда достигнут конец */
 .works-carousel-next.disabled {
     opacity: 0.5;
     pointer-events: none;
     cursor: not-allowed;
 }
 
-/* Закругленные углы для изображений */
 .card-img-top, .img-fluid {
     border-radius: 12px !important;
 }
 
-/* Закругленные углы для карточек */
 .card {
     border-radius: 15px !important;
     overflow: hidden;
 }
 
-/* Закругленные углы для слайдов работ */
 .works-carousel-slide .card {
     border-radius: 15px !important;
 }
-/* Убираем яркость — фон белый или светло-серый */
+
 #contact {
-    background-color: #f9f9fb; /* очень мягкий фон */
+    background-color: #f9f9fb;
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -577,7 +440,6 @@
     transform: translateY(0);
 }
 
-/* Стили для QR-обёртки */
 .qr-wrapper {
     transition: box-shadow 0.25s ease;
 }
@@ -586,7 +448,6 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
-/* Стиль ссылки в контактах */
 .link-muted {
     color: #6c63ff;
     font-weight: 500;
@@ -597,7 +458,6 @@
     text-decoration: underline;
 }
 
-/* Улучшенные тени и плавность */
 .info-card {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -608,23 +468,15 @@
     box-shadow: 0 15px 30px rgba(108, 99, 255, 0.15);
 }
 
-/* Разделители */
 .divider-line {
     position: relative;
     animation: pulseGlow 2s infinite;
 }
 
-@keyframes pulseGlow {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-/* Плавные переходы для всего сайта */
 * {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Улучшенные тени для карточек */
 .card {
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
@@ -633,7 +485,6 @@
     box-shadow: 0 15px 35px rgba(108, 99, 255, 0.15);
 }
 
-/* Плавные переходы для кнопок */
 .btn {
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -643,7 +494,6 @@
     box-shadow: 0 8px 20px rgba(108, 99, 255, 0.2);
 }
 
-/* Плавные переходы для изображений */
 .img-fluid {
     transition: all 0.3s ease;
 }
@@ -652,7 +502,6 @@
     transform: scale(1.02);
 }
 
-/* Плавные переходы для навигации */
 .nav-btn-primary {
     transition: all 0.3s ease;
 }
@@ -662,28 +511,413 @@
     box-shadow: 0 5px 15px rgba(108, 99, 255, 0.2);
 }
 
-/* Плавные переходы для секций */
 section {
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* Плавные переходы для хедера */
 .fixed-header {
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
 
-/* Плавные переходы для тени хедера */
 .fixed-header:hover {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
-/* Добавляем фон в пустые секции */
 body {
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
     background-attachment: fixed;
 }
+
+.arrow-pointer {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.arrow-pointer:hover {
+    color: #4a43d2;
+    animation: none;
+    transform: translateX(-50%) scale(1.2);
+}
+
+.col-md-6.col-lg-4 {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.col-md-6.col-lg-4:nth-child(1) { animation-delay: 0.1s; }
+.col-md-6.col-lg-4:nth-child(2) { animation-delay: 0.2s; }
+.col-md-6.col-lg-4:nth-child(3) { animation-delay: 0.3s; }
+.col-md-6.col-lg-4:nth-child(4) { animation-delay: 0.4s; }
+.col-md-6.col-lg-4:nth-child(5) { animation-delay: 0.5s; }
+.col-md-6.col-lg-4:nth-child(6) { animation-delay: 0.6s; }
+
+.col-sm-6.col-md-4:nth-child(odd) {
+    animation: slideInLeft 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.col-sm-6.col-md-4:nth-child(even) {
+    animation: slideInRight 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.works-carousel-slide {
+    animation: zoomIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+.card-img-top, .img-fluid {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover .card-img-top,
+.card:hover .img-fluid {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+.nav-btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.nav-btn-primary:hover::before {
+    left: 100%;
+}
+
+.hero-section {
+    animation: fadeInScale 1s ease-out forwards;
+}
+
+.hero-section .btn {
+    animation: fadeInUp 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+.hero-section .btn:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.hero-section .btn:nth-child(3) {
+    animation-delay: 0.7s;
+}
+
+/* === МОБИЛЬНЫЕ СТИЛИ — В КОНЦЕ === */
+@media (max-width: 992px) {
+    .works-carousel-slide {
+        flex: 0 0 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .works-carousel-slide {
+        flex: 0 0 100%;
+    }
+    .works-carousel-wrapper {
+        padding: 0 40px;
+    }
+
+    /* Хедер */
+    .fixed-header {
+        padding: 8px 10px !important;
+        background: rgba(255,255,255,0.95) !important;
+        backdrop-filter: blur(8px) !important;
+        border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+    }
+
+    /* Кнопки навигации — увеличиваем тап-зону */
+    .nav-btn-primary,
+    header .btn {
+        font-size: 16px !important;
+        padding: 12px 16px !important;
+        border-radius: 16px !important;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    /* Мобильное меню — улучшаем отображение */
+    #mobileMenu .btn {
+        padding: 14px 20px !important;
+        font-size: 16px;
+        border-radius: 16px;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* HERO — адаптируем заголовок и кнопки */
+    .hero-section {
+        min-height: 60vh !important;
+        padding-top: 60px !important;
+        padding-bottom: 40px !important;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .hero-section .btn {
+        width: 100%;
+        max-width: 320px;
+        margin: 8px auto;
+        font-size: 16px;
+        padding: 12px 20px !important;
+    }
+
+    /* Новости — уменьшаем отступы */
+    #news .card {
+        margin-bottom: 16px;
+        border-radius: 16px !important;
+    }
+
+    #news .card-body {
+        padding: 16px !important;
+    }
+
+    #news .card-title {
+        font-size: 1.1rem !important;
+    }
+
+    #news .card-text {
+        font-size: 0.9rem !important;
+    }
+
+    /* Карточки — делаем их компактнее */
+    .card {
+        border-radius: 16px !important;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card-img-top {
+        height: 180px !important;
+        object-fit: cover;
+    }
+
+    /* Works carousel — улучшаем мобильную версию */
+    .works-carousel-wrapper {
+        padding: 0 10px !important;
+    }
+
+    .works-carousel-slide {
+        flex: 0 0 100% !important;
+        padding: 0 10px;
+    }
+
+    .works-carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(108, 99, 255, 0.8);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+    }
+
+    .works-carousel-prev {
+        left: 10px;
+    }
+
+    .works-carousel-next {
+        right: 10px;
+    }
+
+    .works-carousel-btn:hover {
+        background: #6c63ff;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Руководство — адаптируем фото и текст */
+    #team img {
+        width: 120px !important;
+        height: 120px !important;
+        border: 3px solid #6c63ff;
+    }
+
+    #team .card-body {
+        padding: 16px !important;
+    }
+
+    #team .h4 {
+        font-size: 1.1rem !important;
+    }
+
+    #team .text-primary {
+        font-size: 0.9rem !important;
+    }
+
+    /* Контакты — делаем QR-код удобнее для сканирования */
+    #contact .qr-wrapper {
+        max-width: 180px;
+        margin-bottom: 16px;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    #contact .contact-info {
+        text-align: center;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    #contact .contact-info p {
+        margin: 6px 0;
+    }
+
+    /* Шрифты — делаем их немного крупнее */
+    body {
+        font-size: 16px !important;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 1.2rem !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Паддинги и маржины — уменьшаем для компактности */
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .py-4 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* Отключаем анимации на слабых устройствах (опционально) */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Скрываем анимированную стрелку на мобильных */
+    .arrow-pointer {
+        display: none !important;
+    }
+
+    /* Увеличиваем высоту кнопок для удобства */
+    .btn {
+        min-height: 44px;
+        padding: 10px 16px !important;
+    }
+
+    /* Убираем лишние отступы в секциях */
+    section {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* Улучшаем контрастность текста */
+    .text-white {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+    }
+
+    /* Делаем ссылки более заметными */
+    a:not(.btn):not(.nav-btn-primary) {
+        text-decoration: underline !important;
+        color: #6c63ff !important;
+    }
+
+    a:not(.btn):not(.nav-btn-primary):hover {
+        color: #5a52d5 !important;
+    }
+}
 </style>
+
+<!-- СКРИПТЫ -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Дополнительный скрипт для обработки клика по стрелке
+    const arrow = document.querySelector('.arrow-pointer');
+    if (arrow) {
+        arrow.addEventListener('click', function() {
+            document.querySelector('a[href="{% url 'works' %}"]').click();
+        });
+    }
+
+    // Анимации при скролле
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'none';
+                entry.target.offsetHeight;
+                entry.target.style.animation = null;
+                if (entry.target.classList.contains('col-md-6') || entry.target.classList.contains('col-sm-6')) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.col-md-6.col-lg-4').forEach(card => {
+        card.style.animationPlayState = 'paused';
+        observer.observe(card);
+    });
+
+    document.querySelectorAll('.col-sm-6.col-md-4').forEach(card => {
+        card.style.animationPlayState = 'paused';
+        observer.observe(card);
+    });
+
+    document.querySelectorAll('.works-carousel-slide').forEach(slide => {
+        slide.style.animationPlayState = 'paused';
+        observer.observe(slide);
+    });
+
+    const aboutSection = document.querySelector('#about');
+    if (aboutSection) {
+        const aboutObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    aboutSection.style.animation = 'fadeInScale 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+        aboutObserver.observe(aboutSection);
+    }
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -698,25 +932,21 @@ document.addEventListener('DOMContentLoaded', function() {
     let autoSlideInterval;
     let slidesToShow = getSlidesToShow();
 
-    // Определяем сколько слайдов показывать
     function getSlidesToShow() {
         if (window.innerWidth >= 992) return 3;
         if (window.innerWidth >= 768) return 2;
         return 1;
     }
 
-    // Проверяем, достигли ли мы конца
     function isAtEnd() {
         return currentIndex >= slides.length - slidesToShow;
     }
 
-    // Обновляем состояние кнопок
     function updateButtons() {
         nextBtn.classList.toggle('disabled', isAtEnd());
         prevBtn.classList.toggle('disabled', currentIndex === 0);
     }
 
-    // Функция для перемещения к слайду
     const moveToSlide = (index) => {
         if (index < 0) index = 0;
         if (index > slides.length - slidesToShow) index = slides.length - slidesToShow;
@@ -727,27 +957,22 @@ document.addEventListener('DOMContentLoaded', function() {
         updateButtons();
     };
 
-    // Автоматическое перелистывание (только если не достигнут конец)
     const startAutoSlide = () => {
         autoSlideInterval = setInterval(() => {
             if (!isAtEnd()) {
                 moveToSlide(currentIndex + 1);
             } else {
-                // Если достигнут конец - возвращаемся в начало
                 moveToSlide(0);
             }
         }, 5000);
     };
 
-    // Остановка автоматического перелистывания при наведении
     track.addEventListener('mouseenter', () => {
         clearInterval(autoSlideInterval);
     });
 
-    // Возобновление автоматического перелистывания
     track.addEventListener('mouseleave', startAutoSlide);
 
-    // Кнопки навигации
     nextBtn.addEventListener('click', () => {
         if (!isAtEnd()) {
             moveToSlide(currentIndex + 1);
@@ -758,85 +983,17 @@ document.addEventListener('DOMContentLoaded', function() {
         moveToSlide(currentIndex - 1);
     });
 
-    // Обработка изменения размера окна
     window.addEventListener('resize', () => {
         slidesToShow = getSlidesToShow();
         moveToSlide(Math.min(currentIndex, slides.length - slidesToShow));
     });
 
-    // Инициализация
     updateButtons();
     moveToSlide(0);
     startAutoSlide();
 });
 </script>
-</section>
 
-
-<!-- Команда -->
-<section id="team" class="py-4 bg-light">
-    <div class="container px-3 py-4">
-        <div class="text-center mb-4">
-            <h2 class="h3 pb-2 border-bottom">Наша команда</h2>
-            <div class="divider-line mx-auto" style="width: 60px; height: 3px; background: #6c63ff; border-radius: 2px; margin: 10px auto;"></div>
-        </div>
-
-        <div class="row g-3 py-3">
-            {% for employee in employees %}
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="card h-100 shadow-sm text-center" style="transition: all 0.3s ease; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                    <img src="{{ employee.photo.url }}" class="card-img-top rounded-circle mx-auto mt-3"
-                         alt="{{ employee.name }}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50% !important;">
-                    <div class="card-body">
-                        <h3 class="h5 card-title">{{ employee.name }}</h3>
-                        <p class="text-primary small">{{ employee.position }}</p>
-                        {% if employee.bio %}
-                        <p class="card-text small">{{ employee.bio }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center py-3">
-                <p class="text-muted">Информация о сотрудниках пока отсутствует</p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Контакты — компактная и сдержанная версия -->
-<section id="contact" class="py-4">
-    <div class="container px-3">
-        <div class="text-center mb-4">
-            <h2 class="h3">Контакты</h2>
-            <div class="divider-line mx-auto" style="width: 60px; height: 3px; background: #6c63ff; border-radius: 2px; margin: 10px auto;"></div>
-        </div>
-        <div class="row align-items-center g-3 g-md-0">
-            <!-- QR-код -->
-            <div class="col-md-5 d-flex justify-content-center">
-                <div class="qr-wrapper rounded-3 overflow-hidden" style="max-width: 200px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
-                    <img src="{% static 'myapp/images/psm_qr.jpg' %}"
-                         alt="QR-код для связи"
-                         class="img-fluid w-100"
-                         loading="lazy"
-                         style="object-fit: contain;">
-                </div>
-            </div>
-
-            <!-- Контактные данные -->
-            <div class="col-md-7 mt-3 mt-md-0">
-                <div class="contact-info small text-muted">
-                    <p class="mb-1"><strong>ООО «ПромСпецМонтаж»</strong></p>
-                    <p class="mb-1">660020, г. Красноярск, ул. Шахтеров, д. 4, стр. 8, оф. 3</p>
-                    <p class="mb-1">E-mail: <a href="mailto:info@psm-company.ru" class="text-decoration-none link-muted">info@psm-company.ru</a></p>
-                    <p class="mb-1">ОКПО 35378835 &nbsp;|&nbsp; ОГРН 1192468000295</p>
-                    <p class="mb-0">ИНН/КПП 2465191182/246501001</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -883,7 +1040,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (entry.isIntersecting) {
                     contactSection.classList.add('visible');
                 } else {
-                    // Убираем класс, когда элемент уходит из области видимости
                     contactSection.classList.remove('visible');
                 }
             });
@@ -893,4 +1049,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endblock %}
+
 {% endblock %}

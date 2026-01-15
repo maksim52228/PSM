@@ -55,6 +55,11 @@ class Employee(models.Model):
     bio = models.TextField(verbose_name="Краткая информация", blank=True)
     is_published = models.BooleanField(default=True, verbose_name="Опубликовано")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок отображения")
+    email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name="Email"
+    )
 
     class Meta:
         verbose_name = "Сотрудник"

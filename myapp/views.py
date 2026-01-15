@@ -110,8 +110,11 @@ from .forms import ChatMessageForm
 
 
 def chat(request):
-    # Получаем последние 50 сообщений
-    messages = ChatMessage.objects.all().order_by('-timestamp')[:50]
+    # берём последние 50 сообщений (самые новые)
+    messages_qs = ChatMessage.objects.all().order_by('-timestamp')[:50]
+
+    # разворачиваем, чтобы в шаблоне были от старых к новым
+    messages = reversed(messages_qs)
 
     if request.method == 'POST':
         form = ChatMessageForm(request.POST)

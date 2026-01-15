@@ -29,13 +29,14 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'display_photo', 'is_published', 'order')
+    list_display = ('name', 'position', 'email', 'display_photo', 'is_published', 'order')
     list_editable = ('is_published', 'order')
-    search_fields = ('name', 'position')
+    search_fields = ('name', 'position', 'email')
     list_filter = ('is_published',)
+
     fieldsets = (
-        (None, {
-            'fields': ('name', 'position', 'photo', 'bio')
+        ('Основная информация', {
+            'fields': ('name', 'position', 'email', 'photo', 'bio')
         }),
         ('Дополнительные настройки', {
             'fields': ('is_published', 'order'),
@@ -45,8 +46,10 @@ class EmployeeAdmin(admin.ModelAdmin):
 
     def display_photo(self, obj):
         if obj.photo:
-            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 50%;" />',
-                               obj.photo.url)
+            return format_html(
+                '<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 50%;" />',
+                obj.photo.url
+            )
         return "-"
 
     display_photo.short_description = 'Фото'

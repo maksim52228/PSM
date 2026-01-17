@@ -49,7 +49,9 @@ DISABLE_SUPABASE_STORAGE = config('DISABLE_SUPABASE_STORAGE', default=False, cas
 # ВСЕГДА используем локальную статику для админки, CSS, JS и т.д.
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "myapp" / "static",
+]
 # Медиафайлы (загруженные пользователем) — в Supabase
 MEDIA_URL = f'https://{SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/{SUPABASE_BUCKET}/media/'
 DEFAULT_FILE_STORAGE = 'mysite.rest_storage.MediaStorage'  # твой кастомный бэкенд

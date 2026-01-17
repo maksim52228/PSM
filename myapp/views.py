@@ -164,3 +164,6 @@ def yandex_verification(request):
         "Verification: ff639d9ed0973929",
         content_type="text/plain"
     )
+
+def health(request):
+    return HttpResponse("OK")

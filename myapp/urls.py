@@ -19,6 +19,7 @@ urlpatterns = [
         "yandex_ff639d9ed0973929.html",
         yandex_verification
     ),
+    path("health/", views.health),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

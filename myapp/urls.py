@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import team_view
 from django.urls import path
-
+from .views import yandex_verification
 urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
@@ -15,7 +15,10 @@ urlpatterns = [
     path('team/', team_view, name='team'),
     path('works/', works, name='works'),
     path('send-admin-message/', views.send_admin_message, name='send_admin_message'),
-
+    path(
+        "yandex_ff639d9ed0973929.html",
+        yandex_verification
+    ),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

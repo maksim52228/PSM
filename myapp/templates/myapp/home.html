@@ -50,14 +50,16 @@
                     ПромСпецМонтаж
                 </h1>
                 <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
-                    <a href="#news" class="btn btn-primary px-md-4 py-2 py-md-3 fs-6 fs-md-5">
-                        <i class="fas fa-newspaper me-2"></i>Новости
+                    <a href="#about" class="btn btn-primary px-md-4 py-2 py-md-3 fs-6 fs-md-5">
+                        <i class="fas fa-info-circle me-2"></i>О нас
                     </a>
-                    <a href="{% url 'news_list' %}" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5">
-                        <i class="fas fa-list me-2"></i>Все новости
+
+                    <a href="#works" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5">
+                        <i class="fas fa-building me-2"></i>Наши работы
                     </a>
+
                     <a href="#team" class="btn btn-outline-light px-md-4 py-2 py-md-3 fs-6 fs-md-5">
-                        <i class="fas fa-users me-1"></i>Руководство
+                        <i class="fas fa-users me-2"></i>Руководство
                     </a>
                 </div>
             </div>
@@ -581,9 +583,10 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
+.card:hover,
+.card.hover-active {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+    box-shadow: 0 15px 35px rgba(108, 99, 255, 0.15);
 }
 
 .nav-btn-primary::before {
@@ -858,12 +861,30 @@ body {
         color: #5a52d5 !important;
     }
 }
+
+/* Базовое состояние (чуть приглушённое) */
+.card,
+.info-card,
+.works-carousel-slide .card {
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.card:hover,
+.card.hover-active,
+.info-card:hover,
+.info-card.hover-active,
+.works-carousel-slide .card:hover,
+.works-carousel-slide .card.hover-active {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(108, 99, 255, 0.18);
+}
 </style>
 
 <!-- СКРИПТЫ -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Дополнительный скрипт для обработки клика по стрелке
+
+    // Клик по стрелке
     const arrow = document.querySelector('.arrow-pointer');
     if (arrow) {
         arrow.addEventListener('click', function() {
@@ -871,7 +892,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Анимации при скролле
+    // ===== НАСТРОЙКИ OBSERVER =====
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -880,31 +901,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.animation = 'none';
-                entry.target.offsetHeight;
-                entry.target.style.animation = null;
-                if (entry.target.classList.contains('col-md-6') || entry.target.classList.contains('col-sm-6')) {
-                    entry.target.style.animationPlayState = 'running';
-                }
+                entry.target.style.animationPlayState = 'running';
             }
         });
     }, observerOptions);
 
+    // Новости
     document.querySelectorAll('.col-md-6.col-lg-4').forEach(card => {
         card.style.animationPlayState = 'paused';
         observer.observe(card);
     });
 
+    // Старые сетки (если есть)
     document.querySelectorAll('.col-sm-6.col-md-4').forEach(card => {
         card.style.animationPlayState = 'paused';
         observer.observe(card);
     });
 
+    // Слайдер работ
     document.querySelectorAll('.works-carousel-slide').forEach(slide => {
         slide.style.animationPlayState = 'paused';
         observer.observe(slide);
     });
 
+    // Блок "О компании"
     const aboutSection = document.querySelector('#about');
     if (aboutSection) {
         const aboutObserver = new IntersectionObserver((entries) => {
@@ -918,6 +938,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -1046,6 +1067,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }, { threshold: 0.1 });
         observer.observe(contactSection);
     }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Если устройство НЕ поддерживает hover → мобильное
+    if (window.matchMedia('(hover: none)').matches) {
+
+        const targets = document.querySelectorAll(
+            '.card, .info-card, .works-carousel-slide .card'
+        );
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('hover-active');
+                }
+            });
+        }, {
+            threshold: 0.25
+        });
+
+        targets.forEach(el => observer.observe(el));
+    }
+
 });
 </script>
 {% endblock %}

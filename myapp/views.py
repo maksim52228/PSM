@@ -159,11 +159,16 @@ def works(request):
         "page_obj": page_obj  # Для пагинации
     })
 from django.http import HttpResponse
+
 def yandex_verification(request):
-    return HttpResponse(
-        "Verification: ff639d9ed0973929",
-        content_type="text/plain"
-    )
+    html = """<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>Verification: ff639d9ed0973929</body>
+</html>"""
+    return HttpResponse(html, content_type="text/html")
 
 def health(request):
     return HttpResponse("OK")
